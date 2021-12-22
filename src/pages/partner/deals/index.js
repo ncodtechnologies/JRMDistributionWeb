@@ -1,12 +1,37 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import useScript from "../../../hooks/useScript";
 import HeaderComp from "../../../nav/header";
+import { PARTNER_URL } from "../../../urls/apiUrls";
 
 export default function Deals() {
   useScript("assets/js/custom/deals.js");
 
   const [newDealOpen, setNewDealOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const token = localStorage.getItem("JRMDistribution");
+
+  const loadDeals = (values) => {
+    axios
+      .post(
+        PARTNER_URL.GET_DEALS,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    loadDeals();
+  }, []);
 
   return (
     <>
