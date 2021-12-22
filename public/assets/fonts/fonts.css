@@ -1,0 +1,210 @@
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-Black.eot');
+    src: local('Biotif Black'), local('Biotif-Black'),
+        url('Biotif-Black.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-Black.woff2') format('woff2'),
+        url('Biotif-Black.woff') format('woff'),
+        url('Biotif-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-BoldItalic.eot');
+    src: local('Biotif Bold Italic'), local('Biotif-BoldItalic'),
+        url('Biotif-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-BoldItalic.woff2') format('woff2'),
+        url('Biotif-BoldItalic.woff') format('woff'),
+        url('Biotif-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-ExtraBold.eot');
+    src: local('Biotif ExtraBold'), local('Biotif-ExtraBold'),
+        url('Biotif-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-ExtraBold.woff2') format('woff2'),
+        url('Biotif-ExtraBold.woff') format('woff'),
+        url('Biotif-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-ExtraBoldItalic.eot');
+    src: local('Biotif ExtraBold Italic'), local('Biotif-ExtraBoldItalic'),
+        url('Biotif-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-ExtraBoldItalic.woff2') format('woff2'),
+        url('Biotif-ExtraBoldItalic.woff') format('woff'),
+        url('Biotif-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-BlackItalic.eot');
+    src: local('Biotif Black Italic'), local('Biotif-BlackItalic'),
+        url('Biotif-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-BlackItalic.woff2') format('woff2'),
+        url('Biotif-BlackItalic.woff') format('woff'),
+        url('Biotif-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif Book';
+    src: url('Biotif-Book.eot');
+    src: local('Biotif Book'), local('Biotif-Book'),
+        url('Biotif-Book.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-Book.woff2') format('woff2'),
+        url('Biotif-Book.woff') format('woff'),
+        url('Biotif-Book.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif Book';
+    src: url('Biotif-BookItalic.eot');
+    src: local('Biotif Book Italic'), local('Biotif-BookItalic'),
+        url('Biotif-BookItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-BookItalic.woff2') format('woff2'),
+        url('Biotif-BookItalic.woff') format('woff'),
+        url('Biotif-BookItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-Bold.eot');
+    src: local('Biotif Bold'), local('Biotif-Bold'),
+        url('Biotif-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-Bold.woff2') format('woff2'),
+        url('Biotif-Bold.woff') format('woff'),
+        url('Biotif-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-LightItalic.eot');
+    src: local('Biotif Light Italic'), local('Biotif-LightItalic'),
+        url('Biotif-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-LightItalic.woff2') format('woff2'),
+        url('Biotif-LightItalic.woff') format('woff'),
+        url('Biotif-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-Light.eot');
+    src: local('Biotif Light'), local('Biotif-Light'),
+        url('Biotif-Light.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-Light.woff2') format('woff2'),
+        url('Biotif-Light.woff') format('woff'),
+        url('Biotif-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-Regular.eot');
+    src: local('Biotif Regular'), local('Biotif-Regular'),
+        url('Biotif-Regular.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-Regular.woff2') format('woff2'),
+        url('Biotif-Regular.woff') format('woff'),
+        url('Biotif-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-MediumItalic.eot');
+    src: local('Biotif Medium Italic'), local('Biotif-MediumItalic'),
+        url('Biotif-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-MediumItalic.woff2') format('woff2'),
+        url('Biotif-MediumItalic.woff') format('woff'),
+        url('Biotif-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-Medium.eot');
+    src: local('Biotif Medium'), local('Biotif-Medium'),
+        url('Biotif-Medium.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-Medium.woff2') format('woff2'),
+        url('Biotif-Medium.woff') format('woff'),
+        url('Biotif-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-SemiBoldItalic.eot');
+    src: local('Biotif SemiBold Italic'), local('Biotif-SemiBoldItalic'),
+        url('Biotif-SemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-SemiBoldItalic.woff2') format('woff2'),
+        url('Biotif-SemiBoldItalic.woff') format('woff'),
+        url('Biotif-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-SemiBold.eot');
+    src: local('Biotif SemiBold'), local('Biotif-SemiBold'),
+        url('Biotif-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-SemiBold.woff2') format('woff2'),
+        url('Biotif-SemiBold.woff') format('woff'),
+        url('Biotif-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Biotif';
+    src: url('Biotif-RegularItalic.eot');
+    src: local('Biotif Regular Italic'), local('Biotif-RegularItalic'),
+        url('Biotif-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('Biotif-RegularItalic.woff2') format('woff2'),
+        url('Biotif-RegularItalic.woff') format('woff'),
+        url('Biotif-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Helvetica LT Std';
+    src: url('HelveticaLTStd-Roman.eot');
+    src: url('HelveticaLTStd-Roman.eot?#iefix') format('embedded-opentype'),
+        url('HelveticaLTStd-Roman.woff2') format('woff2'),
+        url('HelveticaLTStd-Roman.woff') format('woff'),
+        url('HelveticaLTStd-Roman.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {font-family: "Frutiger LT Arabic 55 Roman";
+  src: url("03109f1cdfaf83792f1c5251f93ce704.eot"); /* IE9*/
+  src: url("03109f1cdfaf83792f1c5251f93ce704.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("03109f1cdfaf83792f1c5251f93ce704.woff2") format("woff2"), /* chrome、firefox */
+  url("03109f1cdfaf83792f1c5251f93ce704.woff") format("woff"), /* chrome、firefox */
+  url("03109f1cdfaf83792f1c5251f93ce704.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url("03109f1cdfaf83792f1c5251f93ce704.svg#Frutiger LT Arabic 55 Roman") format("svg"); /* iOS 4.1- */
+}
