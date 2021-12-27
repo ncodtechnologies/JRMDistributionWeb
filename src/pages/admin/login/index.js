@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import FieldError from "../../../components/FieldError";
 import { PartnerLoginSchema } from "../../../yupSchema/partnerLogin";
-import { PARTNER_URL } from "../../../urls/apiUrls";
+import { ADMIN_URL } from "../../../urls/apiUrls";
+import { store } from "../../../store";
+import { useDispatch } from "react-redux";
+import { setUser, setUserData } from "../../../slices/user";
 
-function PartnerLogin() {
+function AdminLogin() {
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
     initialValues: {},
     onSubmit(values) {
@@ -14,12 +17,14 @@ function PartnerLogin() {
     validationSchema: PartnerLoginSchema,
   });
 
+  const dispatch = useDispatch();
+
   const [invalidLogin, setInvalidLogin] = useState(false);
 
   const login = (values) => {
     setInvalidLogin(false);
     axios
-      .post(PARTNER_URL.LOGIN, {
+      .post(ADMIN_URL.LOGIN, {
         email: values.email,
         password: values.password,
       })
@@ -37,7 +42,7 @@ function PartnerLogin() {
             "JRMDistributionUser",
             JSON.stringify(response?.data?.result?.user)
           );
-          window.location.href = "/";
+          window.location.href = "/home";
         } else setInvalidLogin(true);
       })
       .catch(function (error) {
@@ -62,10 +67,10 @@ function PartnerLogin() {
               <i class="mdi mdi-arrow-bottom-left"></i>
             </a>
           </div>
-          <h3>LOGIN AS A PATNER</h3>
+          <h3>ADMIN LOGIN</h3>
           <form onSubmit={handleSubmit}>
             <div class="forminput">
-              <label for="">Name</label>
+              <label for="">Email</label>
               <input
                 type="text"
                 placeholder="email@email.com"
@@ -104,4 +109,4 @@ function PartnerLogin() {
   );
 }
 
-export default PartnerLogin;
+export default AdminLogin;

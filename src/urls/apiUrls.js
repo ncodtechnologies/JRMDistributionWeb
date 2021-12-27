@@ -5,4 +5,10 @@ export const PARTNER_URL = {
   GET_DEALS: BASE_URL + "deal/getDeals.php",
 };
 
+export const ADMIN_URL = {
+  LOGIN: BASE_URL + "admin/login.php",
+  GET_ADMINS: BASE_URL + "admin/getAdmins.php",
+  CREATE_ADMIN: BASE_URL + "admin/addAdmin.php",
+};
+
 export const CUSTOMER_URL = {};

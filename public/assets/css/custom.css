@@ -1,0 +1,22 @@
+table.fold-table > tbody > tr.names {
+  border-bottom: 0.5pt solid #ccc;
+}
+
+table.fold-table > tbody > tr.names td {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(54, 72, 92, 1);
+  margin: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+table.fold-table > thead > tr.names td {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(54, 72, 92, 1);
+  margin: 0;
+  background-color: #005baa0d;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}

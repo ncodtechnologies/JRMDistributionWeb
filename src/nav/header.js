@@ -1,8 +1,13 @@
 export default function HeaderComp() {
   const logOut = () => {
     localStorage.removeItem("JRMDistribution");
-    window.location.reload();
+    window.location.href = "/";
   };
+  let user = {};
+  try {
+    user = JSON.parse(localStorage.getItem("JRMDistributionUser"));
+  } catch (e) {}
+
   return (
     <header>
       <div class="container">
@@ -41,7 +46,7 @@ export default function HeaderComp() {
             >
               <div class="dtls">
                 <img src="assets/images/avatar.jpg" alt="" />
-                <span>Mahmoud Eisa</span>
+                <span>{user?.name}</span>
                 <i class="fas fa-caret-down"></i>
               </div>
             </button>
