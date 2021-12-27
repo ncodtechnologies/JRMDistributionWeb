@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import PartnerLogin from "../pages/partner/login";
+import CustomerLogin from "../pages/customer/login";
 import Deals from "../pages/partner/deals";
 
 export default function AppRoutes() {
@@ -9,7 +10,7 @@ export default function AppRoutes() {
 
   return session == "" ? (
     <Routes>
-      <Route path="/" element={<PartnerLogin />} />
+      <Route path="/" element={<CustomerLogin />} />
     </Routes>
   ) : (
     <Routes>
