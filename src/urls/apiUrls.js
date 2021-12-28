@@ -11,4 +11,7 @@ export const ADMIN_URL = {
   CREATE_ADMIN: BASE_URL + "admin/addAdmin.php",
 };
 
-export const CUSTOMER_URL = {};
+export const CUSTOMER_URL = {
+  LOGIN: BASE_URL + "customer/login.php",
+  REGISTER: BASE_URL + "customer/addCustomer.php",
+};

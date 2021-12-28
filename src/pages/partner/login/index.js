@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import FieldError from "../../../components/FieldError";
 import { PartnerLoginSchema } from "../../../yupSchema/partnerLogin";
 import { PARTNER_URL } from "../../../urls/apiUrls";
+import { Link } from "react-router-dom";
 
 function PartnerLogin() {
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
@@ -95,9 +96,9 @@ function PartnerLogin() {
         </div>
         <div class="footcontent text-center">
           Don't have an account?{" "}
-          <a href="" class="btn-forgotpass">
+          <Link to={"/regCustomer"} class="btn-forgotpass">
             Register here
-          </a>
+          </Link>
         </div>
       </div>
     </section>

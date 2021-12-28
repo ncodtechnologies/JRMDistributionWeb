@@ -6,6 +6,8 @@ import { PARTNER_URL } from "../../../urls/apiUrls";
 import RegPartnerSchema from "../../../yupSchema/registerPartner";
 import RegAdditionalInfo from "./components/additionalInfo";
 import RegBasicInfo from "./components/basic";
+import RegBusiness from "./components/business";
+import RegCompanyContacts from "./components/company";
 
 export default function RegisterPartner() {
   const [selectedSection, setSelectedSection] = useState(0);
@@ -118,8 +120,20 @@ export default function RegisterPartner() {
               errors={errors}
             />
           )}
-          {selectedSection == 1 && <RegBasicInfo />}
-          {selectedSection == 2 && <RegBasicInfo />}
+          {selectedSection == 1 && (
+            <RegCompanyContacts
+              data={data}
+              onChangeData={onChangeData}
+              errors={errors}
+            />
+          )}
+          {selectedSection == 2 && (
+            <RegBusiness
+              data={data}
+              onChangeData={onChangeData}
+              errors={errors}
+            />
+          )}
           {selectedSection == 3 && (
             <RegAdditionalInfo
               data={data}

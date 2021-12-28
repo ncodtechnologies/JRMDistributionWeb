@@ -10,9 +10,12 @@ export default function Deals() {
   const [newDealOpen, setNewDealOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const token = localStorage.getItem("JRMDistribution");
+  // const token = localStorage.getItem("JRMDistribution");
+  const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKUk0uQ09NLkVHIiwiYXVkIjoiUEFSVE5FUiIsImlhdCI6MTY0MDI5MjQ0MywibmJmIjoxNjQwMjkyNDQzLCJleHAiOjE2NDA3MjQ0NDMsImRhdGEiOnsiaWQiOm51bGwsInJvbGVzIjpbIlBBUlRORVIiXX19.nGavJn_LFJ5a6QqMioCSF_HHLkumvey_nJENj5Y4yWI";
 
-  const loadDeals = (values) => {
+
+  const loadDeals = () => {
+    console.log("details")
     axios
       .post(
         PARTNER_URL.GET_DEALS,
@@ -23,9 +26,11 @@ export default function Deals() {
       )
       .then(function (response) {
         console.log(response);
+        console.log("response")
       })
       .catch(function (error) {
         console.log(error);
+        console.log("errorr")
       });
   };
 
