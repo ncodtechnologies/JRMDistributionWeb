@@ -9,7 +9,8 @@ import AdminLogin from "../pages/admin/login";
 import RegisterPartner from "../pages/partner/register";
 import WarrantyList from "../pages/customer/warranty";
 import CustomerRegister from "../pages/customer/register";
-import CustomerForgotPasswordEmail from "../pages/customer/forgot_password/email";
+import CustomerForgotPassword from "../pages/customer/forgot_password";
+import PartnerForgotPassword from "../pages/partner/forgot_password";
 
 export default function AppRoutes() {
   const session = localStorage.getItem("JRMDistribution") || "";
@@ -21,11 +22,15 @@ export default function AppRoutes() {
         <Route path="/" element={<CustomerLogin />} />
         <Route path="/customer" element={<CustomerLogin />} />
         <Route
-          path="/customer_forgot_password_email"
-          element={<CustomerForgotPasswordEmail />}
+          path="/customer_forgot_password"
+          element={<CustomerForgotPassword />}
         />
         <Route path="/regCustomer" element={<CustomerRegister />} />
         <Route path="/partner" element={<PartnerLogin />} />
+        <Route
+          path="/partner_forgot_password"
+          element={<PartnerForgotPassword />}
+        />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/regPartner" element={<RegisterPartner />} />
       </Routes>

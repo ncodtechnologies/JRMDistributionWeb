@@ -23,10 +23,10 @@ export default function RegisterPartner() {
   };
 
   const submit = () => {
+    console.log(data);
     RegPartnerSchema.validate(data, { abortEarly: false })
       .then(() => {
         setErrors(null);
-        alert("valid");
       })
       .catch(function (err) {
         let obj = {};
@@ -38,9 +38,9 @@ export default function RegisterPartner() {
       });
   };
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+  // useEffect(() => {
+  //   console.log(errors);
+  // }, [errors]);
 
   return (
     <>

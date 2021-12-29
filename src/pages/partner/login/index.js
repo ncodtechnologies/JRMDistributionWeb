@@ -89,9 +89,9 @@ function PartnerLogin() {
             {invalidLogin && <FieldError error={"Invalid Login"} />}
           </form>
           <div class="text-center">
-            <a href="" class="btn-forgotpass">
+            <Link to={"/partner_forgot_password"} class="btn-forgotpass">
               Forgot your Password?
-            </a>
+            </Link>
           </div>
         </div>
         <div class="footcontent text-center">
