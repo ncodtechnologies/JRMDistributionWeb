@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/controllers/";
+const BASE_URL = "http://localhost/JRMDistributionServer/controllers/";
 
 export const PARTNER_URL = {
   LOGIN: BASE_URL + "partner/login.php",
