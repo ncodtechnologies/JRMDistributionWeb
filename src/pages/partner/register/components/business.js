@@ -106,7 +106,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   type="checkbox"
                   id="inlineCheckbox2"
                   value="Automotive"
-                  checked={data?.automotive?.includes("Automotive")}
+                  checked={data?.industry_focus?.includes("Automotive")}
                   onChange={(e) => {
                     if (e.target.checked) onCheckItem(e.target.value);
                     else onUncheckItem(e.target.value);
@@ -125,7 +125,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   type="checkbox"
                   id="inlineCheckbox2"
                   value="Government"
-                  checked={data?.government?.includes("Government")}
+                  checked={data?.industry_focus?.includes("Government")}
                   onChange={(e) => {
                     if (e.target.checked) onCheckItem(e.target.value);
                     else onUncheckItem(e.target.value);
