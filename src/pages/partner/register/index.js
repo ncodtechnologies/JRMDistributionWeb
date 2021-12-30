@@ -23,6 +23,7 @@ export default function RegisterPartner() {
   };
 
   const submit = () => {
+    console.log(data);
     RegPartnerSchema.validate(data, { abortEarly: false })
       .then(() => {
         setErrors(null);
