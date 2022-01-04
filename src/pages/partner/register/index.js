@@ -23,7 +23,6 @@ export default function RegisterPartner() {
   };
 
   const submit = () => {
-    console.log(data);
     RegPartnerSchema.validate(data, { abortEarly: false })
       .then(() => {
         setErrors(null);
@@ -36,6 +35,20 @@ export default function RegisterPartner() {
           obj[el.path] = el.message;
         });
         setErrors(obj);
+      });
+    register(data);  
+  };
+
+  const register = (values) => {
+    axios
+      .post(PARTNER_URL.REGISTER, {
+        ...values,
+      })
+      .then(function (response) {
+        window.location.href = "/partner";
+      })
+      .catch(function (error) {
+        console.log(error);
       });
   };
 
