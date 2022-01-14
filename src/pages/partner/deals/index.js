@@ -104,6 +104,7 @@ export default function Deals() {
       });
       return acc;
     }, {});
+    const token = localStorage.getItem("JRMDistribution");
 
     let out = [];
     Object.keys(_out).map((key, index) => {

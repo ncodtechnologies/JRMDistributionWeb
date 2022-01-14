@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import useScript from "../../../hooks/useScript";
+import { useNavigate } from "react-router-dom";
 import HeaderComp from "../../../nav/header";
 import { PARTNER_URL } from "../../../urls/apiUrls";
 import RegPartnerSchema from "../../../yupSchema/registerPartner";
@@ -16,6 +16,8 @@ export default function RegisterPartner() {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState();
 
+  const navigate = useNavigate();
+
   const onChangeData = (key, val) => {
     setData({
       ...data,
@@ -24,10 +26,10 @@ export default function RegisterPartner() {
   };
 
   const submit = () => {
-    console.log(data);
     RegPartnerSchema.validate(data, { abortEarly: false })
       .then(() => {
         setErrors(null);
+        register(data);
       })
       .catch(function (err) {
         let obj = {};
@@ -36,6 +38,20 @@ export default function RegisterPartner() {
           obj[el.path] = el.message;
         });
         setErrors(obj);
+      });
+  };
+
+  const register = (values) => {
+    axios
+      .post(PARTNER_URL.REGISTER, {
+        ...values,
+      })
+      .then(function (response) {
+        if (roles.includes("ADMIN")) navigate("/partners", { replace: true });
+        else navigate("/partner", { replace: true });
+      })
+      .catch(function (error) {
+        console.log(error);
       });
   };
 

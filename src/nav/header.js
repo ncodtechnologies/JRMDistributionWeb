@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function HeaderComp({ activeMenuIndex }) {
   const logOut = () => {
+    localStorage.removeItem("JRMDistribution");
     localStorage.removeItem("JRMDistributionUser");
     localStorage.removeItem("JRMDistributionRoles");
     window.location.href = "/";
