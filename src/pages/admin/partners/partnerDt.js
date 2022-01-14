@@ -256,6 +256,12 @@ export default function ParnerDt() {
                 <table>
                   <tr>
                     <td></td>
+                    <td>
+                      <p>{partner?.commercial_document}</p>
+                    </td>
+                    <td>
+                      <p>{partner?.taxation_document}</p>
+                    </td>
                   </tr>
                 </table>
               </div>
