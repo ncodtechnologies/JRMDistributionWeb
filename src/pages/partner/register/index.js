@@ -36,6 +36,20 @@ export default function RegisterPartner() {
         });
         setErrors(obj);
       });
+    register(data);  
+  };
+
+  const register = (values) => {
+    axios
+      .post(PARTNER_URL.REGISTER, {
+        ...values,
+      })
+      .then(function (response) {
+        window.location.href = "/partner";
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   // useEffect(() => {

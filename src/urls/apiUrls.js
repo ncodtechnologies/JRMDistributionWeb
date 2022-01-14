@@ -1,7 +1,8 @@
-const BASE_URL = "http://localhost:8000/controllers/";
+const BASE_URL = "http://localhost/JRMDistributionServer/controllers/";
 
 export const PARTNER_URL = {
   LOGIN: BASE_URL + "partner/login.php",
+  REGISTER:BASE_URL + "partner/addPartner.php",
   GET_DEALS: BASE_URL + "deal/getDeals.php",
   SEND_FORGOT_PASS_CODE: BASE_URL + "partner/sendForgotPasswordCode.php",
   VERIFY_FORGOT_PASS_CODE: BASE_URL + "partner/verifyForgotPasswordCode.php",
