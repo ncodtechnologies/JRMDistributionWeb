@@ -11,6 +11,10 @@ import WarrantyList from "../pages/customer/warranty";
 import CustomerRegister from "../pages/customer/register";
 import CustomerForgotPassword from "../pages/customer/forgot_password";
 import PartnerForgotPassword from "../pages/partner/forgot_password";
+import AdminDeals from "../pages/admin/deals";
+import DealDt from "../pages/admin/deals/dealDt";
+import PartnersList from "../pages/admin/partners";
+import PartnerDt from "../pages/admin/partners/partnerDt";
 
 export default function AppRoutes() {
   const session = localStorage.getItem("JRMDistribution") || "";
@@ -54,6 +58,11 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<AdminHome />} />
         <Route path="/home" element={<AdminHome />} />
+        <Route path="/deals" element={<AdminDeals />} />
+        <Route path="/dealDt" element={<DealDt />} />
+        <Route path="/partners" element={<PartnersList />} />
+        <Route path="/partnerDt" element={<PartnerDt />} />
+        <Route path="/regPartner" element={<RegisterPartner />} />
       </Routes>
     );
   }

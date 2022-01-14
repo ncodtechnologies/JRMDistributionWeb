@@ -12,6 +12,20 @@ $(function () {
   });
 });
 
+function setTableOnClick() {
+  $(".fold-table tr.view").on("click", function () {
+    if ($(this).hasClass("open")) {
+      $(this).removeClass("open").next(".fold").removeClass("open");
+    } else {
+      $(".fold-table tr.view")
+        .removeClass("open")
+        .next(".fold")
+        .removeClass("open");
+      $(this).addClass("open").next(".fold").addClass("open");
+    }
+  });
+}
+
 $(".js-select-menu").on("click", function () {
   var $menu = $(this);
   var $menuState = $menu.find(".js-menu-state");

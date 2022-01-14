@@ -8,6 +8,7 @@ import RegAdditionalInfo from "./components/additionalInfo";
 import RegBasicInfo from "./components/basic";
 import RegBusiness from "./components/business";
 import RegCompanyContacts from "./components/company";
+import RegPartnershipLevel from "./components/partnership";
 
 export default function RegisterPartner() {
   const [selectedSection, setSelectedSection] = useState(0);
@@ -38,9 +39,37 @@ export default function RegisterPartner() {
       });
   };
 
-  // useEffect(() => {
-  //   console.log(errors);
-  // }, [errors]);
+  const roles = localStorage.getItem("JRMDistributionRoles") || "";
+
+  const [tabHeads, setTabHeads] = useState([
+    {
+      en: "Basic Info",
+      ar: "البيانات الأساسية",
+    },
+    {
+      en: "Company Contacts",
+      ar: "بيانات الاتصال",
+    },
+    {
+      en: "Business Information",
+      ar: "بيانات الأعمال",
+    },
+    {
+      en: "Additional Info",
+      ar: "بيانات إضافية",
+    },
+  ]);
+
+  useEffect(() => {
+    if (roles.includes("ADMIN"))
+      setTabHeads([
+        ...tabHeads,
+        {
+          en: "Partnership Level",
+          ar: "مستوى الشراكة",
+        },
+      ]);
+  }, [roles]);
 
   return (
     <>
@@ -53,62 +82,21 @@ export default function RegisterPartner() {
           <div class="formsteps">
             <div class="container">
               <ul>
-                <li class={selectedSection < 4 && "active"}>
-                  <a
-                    href=""
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedSection(0);
-                    }}
-                  >
-                    <div class="step">1</div>
-                    <p>Basic Info</p>
-                    <p class="ar">البيانات الأساسية</p>
-                  </a>
-                </li>
-                <li
-                  class={selectedSection < 4 && selectedSection > 0 && "active"}
-                >
-                  <a
-                    href=""
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedSection(1);
-                    }}
-                  >
-                    <div class="step">2</div>
-                    <p>Company Contacts</p>
-                    <p class="ar">بيانات الاتصال</p>
-                  </a>
-                </li>
-                <li
-                  class={selectedSection < 4 && selectedSection > 1 && "active"}
-                >
-                  <a
-                    href=""
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedSection(2);
-                    }}
-                  >
-                    <div class="step">3</div>
-                    <p>Business Information</p>
-                    <p class="ar">بيانات الأعمال</p>
-                  </a>
-                </li>
-                <li class={selectedSection == 3 && "active"}>
-                  <a
-                    href=""
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedSection(3);
-                    }}
-                  >
-                    <div class="step">4</div>
-                    <p>Additional Info</p>
-                    <p class="ar">بيانات إضافية</p>
-                  </a>
-                </li>
+                {tabHeads.map((tab, index) => (
+                  <li class={selectedSection >= index && "active"}>
+                    <a
+                      href=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setSelectedSection(index);
+                      }}
+                    >
+                      <div class="step">{index + 1}</div>
+                      <p>{tab.en}</p>
+                      <p class="ar">{tab.ar}</p>
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -141,6 +129,13 @@ export default function RegisterPartner() {
               errors={errors}
             />
           )}
+          {selectedSection == 4 && (
+            <RegPartnershipLevel
+              data={data}
+              onChangeData={onChangeData}
+              errors={errors}
+            />
+          )}
 
           <div class="btnreg">
             {selectedSection > 0 && (
@@ -155,7 +150,7 @@ export default function RegisterPartner() {
                 Previous
               </a>
             )}
-            {selectedSection < 3 && (
+            {selectedSection < tabHeads.length - 1 && (
               <a
                 href="#"
                 onClick={(e) => {
@@ -167,7 +162,7 @@ export default function RegisterPartner() {
                 Next
               </a>
             )}
-            {selectedSection == 3 && (
+            {selectedSection == tabHeads.length - 1 && (
               <a
                 href="#"
                 class="btn-primary"
@@ -182,58 +177,6 @@ export default function RegisterPartner() {
           </div>
         </div>
       </section>
-      <footer>
-        <div class="container">
-          <div class="dtls">
-            <img src="assets/images/logo-wh.svg" alt="" />
-            <p>
-              Our Technological stack allows for your business to be future
-              ready
-            </p>
-            <ul>
-              <li>
-                <a href="">
-                  <i class="fab fa-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <i class="fab fa-whatsapp"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="subscribe">
-            <strong>Stay up to date with the latest news!</strong>
-            <form action="">
-              <input type="text" placeholder="Enter Your Email" />
-              <input type="submit" value="subscribe" />
-            </form>
-          </div>
-          <div class="footnav">
-            <ul>
-              <li>
-                <a href="">Home</a>
-                <a href="">Mobility</a>
-                <a href="">Resources</a>
-              </li>
-              <li>
-                <a href="">SL2100 Communications System</a>
-                <a href="">Phones</a>
-                <a href="">Contact us</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="container">
-          <p class="copyright">Copyrights JRM for Communications 2021</p>
-        </div>
-      </footer>
     </>
   );
 }

@@ -363,6 +363,7 @@ header .container {
   font-size: 16px;
   color: #005baa;
   position: relative;
+  margin-right: 100px;
 }
 .breadcrumbs span::before {
   content: "";
@@ -766,6 +767,18 @@ table.fold-table > tbody > tr.view td:last-child {
 .status.rejected::before {
   background: rgba(255, 0, 0, 1);
 }
+.status.gold::before {
+  background: #f8e70c;
+}
+.status.silver::before {
+  background: #8195ab;
+}
+.status.platinum::before {
+  background: #cb3025;
+}
+.status.authorized::before {
+  background: #04458c;
+}
 table.fold-table > tbody > tr.fold table tr td {
   border-bottom: 1px solid #eee;
 }
@@ -1017,7 +1030,7 @@ footer .subscribe input[type="submit"] {
   display: none;
 }
 .select-menu .select-label {
-  width: calc(100% - 60px);
+  width: 100%;
   display: flex;
   height: 45px;
   display: block;
@@ -1041,7 +1054,7 @@ footer .subscribe input[type="submit"] {
   text-overflow: ellipsis;
   height: 45px;
 }
-.select-menu .arrow {
+.arrow {
   width: 45px;
   height: 45px;
   position: absolute;
@@ -1586,4 +1599,27 @@ body.dashboard {
 
 .fwrap > .row > .col-md-2 > .form-check {
   align-items: flex-start;
+}
+
+.product-selected > div {
+  padding: 10px;
+}
+
+.headermenu {
+  flex: 1;
+  margin: 20px;
+}
+
+.headermenu > ul > li {
+  display: inline-block;
+  margin: 20px;
+  padding: 15px;
+}
+
+.headermenu > ul > li > a {
+  color: #fff;
+}
+
+.headermenu > ul > li > a.active {
+  color: #ffd400;
 }

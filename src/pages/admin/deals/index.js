@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 import FieldError from "../../../components/FieldError";
 import useScript from "../../../hooks/useScript";
 import HeaderComp from "../../../nav/header";
-import { PARTNER_URL } from "../../../urls/apiUrls";
+import { ADMIN_URL, PARTNER_URL } from "../../../urls/apiUrls";
 import { NewDealSchema } from "../../../yupSchema/newDeal";
+import useDropdownMenu from "react-accessible-dropdown-menu-hook";
+import { Dropdown } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-export default function Deals() {
+export default function AdminDeals() {
   useScript("assets/js/custom/deals.js");
+
+  const { buttonProps, itemProps, isOpen, setIsOpen } = useDropdownMenu(2);
 
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
     initialValues: {},
@@ -18,6 +23,8 @@ export default function Deals() {
     },
     validationSchema: NewDealSchema,
   });
+
+  const navigate = useNavigate();
 
   const [newDealOpen, setNewDealOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -40,6 +47,8 @@ export default function Deals() {
   const [capacity, setCapacity] = useState("");
 
   const [dealList, setDealList] = useState([]);
+  const [count, setCount] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("PENDING");
 
   const onProdChange = (e) => {
     e.preventDefault();
@@ -73,6 +82,7 @@ export default function Deals() {
       })
       .then(function (response) {
         loadDeals();
+        loadCount();
         setShowSuccess(true);
       })
       .catch(function (error) {
@@ -91,7 +101,6 @@ export default function Deals() {
           mobile_no: obj["mobile_no"],
           revenue: obj["revenue"],
           purchase_date: obj["purchase_date"],
-          status: obj["status"],
           products: [],
         };
       }
@@ -112,11 +121,13 @@ export default function Deals() {
     return out;
   };
 
-  const loadDeals = () => {
+  const loadDeals = (status) => {
     axios
       .post(
-        PARTNER_URL.GET_DEALS,
-        {},
+        ADMIN_URL.GET_DEALS,
+        {
+          status,
+        },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -131,21 +142,101 @@ export default function Deals() {
       });
   };
 
+  const loadCount = () => {
+    axios
+      .post(
+        ADMIN_URL.GET_DEALS_COUNT,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        setCount([...response?.data?.count]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    loadDeals();
-  }, []);
+    loadDeals(selectedStatus);
+    loadCount();
+  }, [selectedStatus]);
+
+  const [newCount, setNewCount] = useState(0);
+  const [activeCount, setActiveCount] = useState(0);
+  const [rejectCount, setRejectCount] = useState(0);
+
+  useEffect(() => {
+    setNewCount(
+      count.length > 0 &&
+        count.reduce((a, b) => {
+          return a + (b.status == "PENDING" ? parseInt(b.count) || 0 : 0);
+        }, 0)
+    );
+    setActiveCount(
+      count.length > 0 &&
+        count.reduce((a, b) => {
+          return a + (b.status == "APPROVED" ? parseInt(b.count) || 0 : 0);
+        }, 0)
+    );
+    setRejectCount(
+      count.length > 0 &&
+        count.reduce((a, b) => {
+          return a + (b.status == "REJECTED" ? parseInt(b.count) || 0 : 0);
+        }, 0)
+    );
+  }, [count]);
 
   return (
     <>
-      <HeaderComp />
+      <HeaderComp activeMenuIndex={1} />
       <section class="content">
         <div class="container">
-          <div class="breadcrumbs">
-            <a href="">Dashboard</a>
-            <span>Deal Registeration</span>
-          </div>
           <div class="title">
-            <h3>DEAL REGISTERATION</h3>
+            <div class="breadcrumbs">
+              {selectedStatus == "PENDING" ? (
+                <span>New ({newCount})</span>
+              ) : (
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedStatus("PENDING");
+                  }}
+                >
+                  New(
+                  {newCount})
+                </a>
+              )}
+              {selectedStatus == "APPROVED" ? (
+                <span>Active({activeCount})</span>
+              ) : (
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedStatus("APPROVED");
+                  }}
+                >
+                  Active({activeCount})
+                </a>
+              )}
+              {selectedStatus == "REJECTED" ? (
+                <span>Rejected({rejectCount})</span>
+              ) : (
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedStatus("REJECTED");
+                  }}
+                >
+                  Rejected({rejectCount})
+                </a>
+              )}
+            </div>
             <button
               class="btn-border"
               onClick={(e) => {
@@ -220,43 +311,47 @@ export default function Deals() {
                             <p>{deal.revenue}</p>
                           </td>
                           <td>
-                            {deal.status == "PENDING" && (
-                              <div class="status pending">Pending</div>
-                            )}
-                            {deal.status == "APPROVED" && (
-                              <div class="status approved">Approved</div>
-                            )}
-                            {deal.status == "REJECTED" && (
-                              <div class="status rejected">Rejected</div>
-                            )}
-                          </td>
-                        </tr>
-                        <tr class="fold">
-                          <td colspan="8">
-                            <table>
-                              {deal?.products?.map((prod, index) => {
-                                return (
-                                  <tr>
-                                    <td>{index + 1}</td>
-                                    <td>
-                                      <span>Product</span>
-                                      <p>{prod.product_name}</p>
-                                    </td>
-                                    <td>
-                                      <span>Qty</span>
-                                      <p>{prod.qty}</p>
-                                    </td>
-                                    <td>
-                                      <span>Capacity</span>
-                                      <p>{prod.capacity}</p>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                  </tr>
-                                );
-                              })}
-                            </table>
+                            <Dropdown>
+                              {/* <Dropdown.Toggle
+                                variant="transparent"
+                                id="dropdown-basic"
+                                style={{ color: "#aaa" }}
+                                as={(e) => (
+                                  <a
+                                    href="#"
+                                    style={{ color: "#aaa" }}
+                                    onClick={(_e) => {
+                                      _e.preventDefault();
+                                      e.onClick(_e);
+                                    }}
+                                  >
+                                    <i class="fas fa-ellipsis-h"></i>
+                                  </a>
+                                )}
+                              >
+                                <i class="fas fa-ellipsis-h"></i>
+                              </Dropdown.Toggle> */}
+                              <Dropdown.Toggle
+                                variant="transparent"
+                                id="dropdown-basic"
+                                style={{ color: "#aaa" }}
+                              >
+                                <i class="fas fa-ellipsis-h"></i>
+                              </Dropdown.Toggle>
+
+                              <Dropdown.Menu>
+                                <Dropdown.Item
+                                  href="#"
+                                  onClick={(e) => {
+                                    navigate("/dealDt", {
+                                      state: { deal },
+                                    });
+                                  }}
+                                >
+                                  View Details
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
                           </td>
                         </tr>
                       </>
@@ -267,58 +362,6 @@ export default function Deals() {
           </div>
         </div>
       </section>
-      <footer>
-        <div class="container">
-          <div class="dtls">
-            <img src="assets/images/logo-wh.svg" alt="" />
-            <p>
-              Our Technological stack allows for your business to be future
-              ready
-            </p>
-            <ul>
-              <li>
-                <a href="">
-                  <i class="fab fa-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <i class="fab fa-whatsapp"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="subscribe">
-            <strong>Stay up to date with the latest news!</strong>
-            <form action="">
-              <input type="text" placeholder="Enter Your Email" />
-              <input type="submit" value="subscribe" />
-            </form>
-          </div>
-          <div class="footnav">
-            <ul>
-              <li>
-                <a href="">Home</a>
-                <a href="">Mobility</a>
-                <a href="">Resources</a>
-              </li>
-              <li>
-                <a href="">SL2100 Communications System</a>
-                <a href="">Phones</a>
-                <a href="">Contact us</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="container">
-          <p class="copyright">Copyrights JRM for Communications 2021</p>
-        </div>
-      </footer>
       {newDealOpen && (
         <section id="newdealwrap">
           <div class="newdealform">
