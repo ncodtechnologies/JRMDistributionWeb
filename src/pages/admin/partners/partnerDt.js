@@ -129,20 +129,318 @@ export default function ParnerDt() {
                   <tr>
                     <td></td>
                     <td>
-                      <span>Full Name</span>
-                      <p>{partner?.full_name}</p>
+                      <span>Company Legal Name</span>
+                      <p>{partner?.company_name}</p>
                     </td>
                     <td>
-                      <span>Role / Title</span>
-                      <p>{partner?.role}</p>
+                      <span>Headoffice Location</span>
+                      <p>{partner?.company_location}</p>
                     </td>
                     <td>
                       <span>Phone</span>
-                      <p>{partner?.phone}</p>
+                      <p>{partner?.company_phone}</p>
+                    </td>
+                    <td>
+                      <span>Fax</span>
+                      <p>{partner?.company_fax}</p>
                     </td>
                     <td>
                       <span>Email</span>
-                      <p>{partner?.email}</p>
+                      <p>{partner?.vendor_email}</p>
+                    </td>
+                    <td>
+                      <span>Website</span>
+                      <p>{partner?.company_website}</p>
+                    </td>
+                    <td>
+                      <span>Years in Business</span>
+                      <p>{partner?.company_years}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;BIILING ADDRESS
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span>Address</span>
+                      <p>{partner?.billing_address}</p>
+                    </td>
+                    <td>
+                      <span>City</span>
+                      <p>{partner?.billing_city}</p>
+                    </td>
+                    <td>
+                      <span>Region</span>
+                      <p>{partner?.billing_region}</p>
+                    </td>
+                    <td>
+                      <span>Zip / Postal code</span>
+                      <p>{partner?.billing_postalcode}</p>
+                    </td>
+                    <td>
+                      <span>Country</span>
+                      <p>{partner?.billing_country}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;SHIPPING ADDRESSS
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span>Address</span>
+                      <p>{partner?.shipping_address}</p>
+                    </td>
+                    <td>
+                      <span>City</span>
+                      <p>{partner?.shipping_city}</p>
+                    </td>
+                    <td>
+                      <span>Region</span>
+                      <p>{partner?.shipping_region}</p>
+                    </td>
+                    <td>
+                      <span>Zip / Postal code</span>
+                      <p>{partner?.shipping_postalcode}</p>
+                    </td>
+                    <td>
+                      <span>Country</span>
+                      <p>{partner?.shipping_country}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;COMPANY DOCUMENTS
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <p>{partner?.commercial_document}</p>
+                    </td>
+                    <td>
+                      <p>{partner?.taxation_document}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;EXECUTIVE
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span>Full Name</span>
+                      <p>{partner?.executive_first_name}</p>
+                    </td>
+                    <td>
+                      <span>Role / Title</span>
+                      <p>{partner?.executive_role}</p>
+                    </td>
+                    <td>
+                      <span>Phone</span>
+                      <p>{partner?.executive_phone}</p>
+                    </td>
+                    <td>
+                      <span>Email</span>
+                      <p>{partner?.executive_email}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;VENDOR MANAGEMENT
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span>Full Name</span>
+                      <p>{partner?.vendor_first_name}</p>
+                    </td>
+                    <td>
+                      <span>Role / Title</span>
+                      <p>{partner?.vendor_role}</p>
+                    </td>
+                    <td>
+                      <span>Phone</span>
+                      <p>{partner?.vendor_phone}</p>
+                    </td>
+                    <td>
+                      <span>Email</span>
+                      <p>{partner?.vendor_email}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;PLEASE PROVIDE A GENERAL DESCRIPTION OF YOUR COMPANY AND OFFERINGS:
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <p>{partner?.company_general}</p>
+                    </td>
+                    
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;ADDITIONAL INFORMATION: PLEASE PROVIDE ANY INFORMATION RELEVANT TO THIS APPLICATION
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <p>{partner?.company_additional}</p>
+                    </td>                   
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;APPROXIMATE CUSTOMER BREAKDOWN BY PERCENTAGE (TOTAL SHOULD EQUAL 100%):
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span>Small/Medium Business</span>
+                      <p>{partner?.business}</p>
+                    </td>
+                    <td>
+                      <span>Enterprise</span>
+                      <p>{partner?.enterprise}</p>
+                    </td>
+                    <td>
+                      <span>Federal Government</span>
+                      <p>{partner?.federal_government}</p>
+                    </td>
+                    <td>
+                      <span>Others</span>
+                      <p>{partner?.business_others}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;DO YOU HAVE A CURRENT OPPORTUNITY? PLEASE DESCRIBE.
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <p>{partner?.opportunity}</p>
                     </td>
                   </tr>
                 </table>
