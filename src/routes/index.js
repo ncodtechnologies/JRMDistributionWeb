@@ -15,6 +15,8 @@ import AdminDeals from "../pages/admin/deals";
 import DealDt from "../pages/admin/deals/dealDt";
 import PartnersList from "../pages/admin/partners";
 import PartnerDt from "../pages/admin/partners/partnerDt";
+import AdminWarranties from "../pages/admin/warranty";
+import AdminCustomer from "../pages/admin/customers";
 
 export default function AppRoutes() {
   const session = localStorage.getItem("JRMDistribution") || "";
@@ -62,6 +64,8 @@ export default function AppRoutes() {
         <Route path="/dealDt" element={<DealDt />} />
         <Route path="/partners" element={<PartnersList />} />
         <Route path="/partnerDt" element={<PartnerDt />} />
+        <Route path="/warranties" element={<AdminWarranties />} />
+        <Route path="/customers" element={<AdminCustomer />} />
         <Route path="/regPartner" element={<RegisterPartner />} />
       </Routes>
     );

@@ -26,11 +26,11 @@ export default function HeaderComp({ activeMenuIndex }) {
     },
     {
       label: "Customers",
-      path: "/partners",
+      path: "/customers",
     },
     {
       label: "Warranty",
-      path: "/partners",
+      path: "/warranties",
     },
   ];
 

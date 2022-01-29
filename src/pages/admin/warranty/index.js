@@ -10,8 +10,9 @@ import { NewDealSchema } from "../../../yupSchema/newDeal";
 import useDropdownMenu from "react-accessible-dropdown-menu-hook";
 import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
 
-export default function AdminDeals() {
+export default function AdminWarranties() {
   useScript("assets/js/custom/deals.js");
 
   const { buttonProps, itemProps, isOpen, setIsOpen } = useDropdownMenu(2);
@@ -47,6 +48,7 @@ export default function AdminDeals() {
   const [capacity, setCapacity] = useState("");
 
   const [dealList, setDealList] = useState([]);
+  const [warrantyList, setWarrantyList] = useState([]);
   const [count, setCount] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("PENDING");
 
@@ -81,7 +83,7 @@ export default function AdminDeals() {
         products: selectedProducts,
       })
       .then(function (response) {
-        loadDeals();
+        loadWarranties(selectedStatus);
         loadCount();
         setShowSuccess(true);
       })
@@ -121,10 +123,10 @@ export default function AdminDeals() {
     return out;
   };
 
-  const loadDeals = (status) => {
+  const loadWarranties = (status) => {
     axios
       .post(
-        ADMIN_URL.GET_DEALS,
+        ADMIN_URL.GET_WARRANTY,
         {
           status,
         },
@@ -133,7 +135,8 @@ export default function AdminDeals() {
         }
       )
       .then(function (response) {
-        setDealList([...formatDeals(response.data.deals)]);
+        // setDealList([...formatDeals(response.data.warranties)]);
+        setWarrantyList([...response.data.warranties]);
         window.setTableOnClick();
       })
       .catch(function (error) {
@@ -145,7 +148,7 @@ export default function AdminDeals() {
   const loadCount = () => {
     axios
       .post(
-        ADMIN_URL.GET_DEALS_COUNT,
+        ADMIN_URL.GET_WARRANTY_COUNT,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -159,8 +162,68 @@ export default function AdminDeals() {
       });
   };
 
+  const activateWarranty = (warranty_id) => {
+    confirmAlert({
+      title: "Confirm Approval",
+      message: "Are you sure?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => approve(warranty_id),
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
+
+  const rejectWarranty = (warranty_id) => {
+    confirmAlert({
+      title: "Confirm Rejection",
+      message: "Are you sure?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => reject(warranty_id),
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
+
+  const approve = (warranty_id) => {
+    axios
+      .post(ADMIN_URL.APPROVE_WARRANTY, {
+        warranty_id,
+      })
+      .then(function (response) {
+        loadWarranties(selectedStatus);
+        loadCount();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const reject = (warranty_id) => {
+    axios
+      .post(ADMIN_URL.REJECT_WARRANTY, {
+        warranty_id,
+      })
+      .then(function (response) {
+        loadWarranties(selectedStatus);
+        loadCount();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    loadDeals(selectedStatus);
+    loadWarranties(selectedStatus);
     loadCount();
   }, [selectedStatus]);
 
@@ -191,7 +254,7 @@ export default function AdminDeals() {
 
   return (
     <>
-      <HeaderComp activeMenuIndex={1} />
+      <HeaderComp activeMenuIndex={3} />
       <section class="content">
         <div class="container">
           <div class="title">
@@ -220,7 +283,7 @@ export default function AdminDeals() {
                     setSelectedStatus("APPROVED");
                   }}
                 >
-                  Active({activeCount})
+                  Approved({activeCount})
                 </a>
               )}
               {selectedStatus == "REJECTED" ? (
@@ -264,99 +327,68 @@ export default function AdminDeals() {
             <button class="btn-primary">Search</button>
           </div>
           <div class="tabledeal">
-            <table class="fold-table">
+            <table class="fold-table" style={{ borderCollapse: "collapse" }}>
+              <thead>
+                <tr class="names">
+                  <td>Deal No</td>
+                  <td>Customer</td>
+                  <td>Sold By</td>
+                  <td>No of Products</td>
+                  <td>Purchase Date</td>
+                  <td></td>
+                </tr>
+              </thead>
               <tbody>
-                {dealList
+                {warrantyList
                   ?.filter(
                     (row) =>
-                      row?.company_name
+                      row?.customer
                         ?.toLowerCase()
                         .includes(search.toLowerCase()) ||
-                      row?.contact_person
-                        ?.toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                      row?.mobile_no
-                        ?.toLowerCase()
-                        .includes(search.toLowerCase())
+                      row?.sold_by?.toLowerCase().includes(search.toLowerCase())
                   )
-                  .map((deal) => {
-                    return (
-                      <>
-                        <tr class="view">
-                          <td></td>
-                          <td>
-                            <span>Deal No</span>
-                            <p>#{deal.deal_id}</p>
-                          </td>
-                          <td>
-                            <span>Customer Name</span>
-                            <p>{deal.company_name}</p>
-                          </td>
-                          <td>
-                            <span>Contact Person</span>
-                            <p>{deal.contact_person}</p>
-                          </td>
-                          <td>
-                            <span>Mobile No.</span>
-                            <p>{deal.mobile_no}</p>
-                          </td>
-                          <td>
-                            <span>Purchase date</span>
-                            <p>
-                              {moment(deal.purchase_date).format("DD/MM/YYYY")}
-                            </p>
-                          </td>
-                          <td>
-                            <span>Expected Revenue</span>
-                            <p>{deal.revenue}</p>
-                          </td>
-                          <td>
-                            <Dropdown>
-                              {/* <Dropdown.Toggle
-                                variant="transparent"
-                                id="dropdown-basic"
-                                style={{ color: "#aaa" }}
-                                as={(e) => (
-                                  <a
-                                    href="#"
-                                    style={{ color: "#aaa" }}
-                                    onClick={(_e) => {
-                                      _e.preventDefault();
-                                      e.onClick(_e);
-                                    }}
-                                  >
-                                    <i class="fas fa-ellipsis-h"></i>
-                                  </a>
-                                )}
-                              >
-                                <i class="fas fa-ellipsis-h"></i>
-                              </Dropdown.Toggle> */}
-                              <Dropdown.Toggle
-                                variant="transparent"
-                                id="dropdown-basic"
-                                style={{ color: "#aaa" }}
-                              >
-                                <i class="fas fa-ellipsis-h"></i>
-                              </Dropdown.Toggle>
+                  .map((row) => (
+                    <tr class="names">
+                      <td># {row.warranty_id}</td>
+                      <td>{row.customer}</td>
+                      <td>{row.sold_by}</td>
+                      <td>{row.product_count}</td>
+                      <td>
+                        {row.purchase_date &&
+                          moment(row.purchase_date).format("DD/MM/YYYY")}{" "}
+                      </td>
+                      <td>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="transparent"
+                            id="dropdown-basic"
+                            style={{ color: "#aaa" }}
+                          >
+                            <i class="fas fa-ellipsis-h"></i>
+                          </Dropdown.Toggle>
 
-                              <Dropdown.Menu>
-                                <Dropdown.Item
-                                  href="#"
-                                  onClick={(e) => {
-                                    navigate("/dealDt", {
-                                      state: { deal },
-                                    });
-                                  }}
-                                >
-                                  View Details
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
-                        </tr>
-                      </>
-                    );
-                  })}
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              href="#"
+                              onClick={(e) => {
+                                activateWarranty(row.warranty_id);
+                              }}
+                            >
+                              Activate
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              href="#"
+                              onClick={(e) => {
+                                rejectWarranty(row.warranty_id);
+                              }}
+                            >
+                              Reject
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

@@ -38,7 +38,6 @@ export default function WarrantyList() {
   const [productName, setProductName] = useState("");
   const [serialNo, setSerialNo] = useState("");
 
-  const [dealList, setDealList] = useState([]);
   const [warrantyList, setWarrantyList] = useState([]);
 
   const onProdChange = (e) => {
@@ -65,12 +64,21 @@ export default function WarrantyList() {
   };
 
   const submit = (values) => {
-    console.log(values);
-    axios
-      .post(CUSTOMER_URL.ADD_WARRANTY, {
-        ...values,
-        products: selectedProducts,
-      })
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+    formData.append("products", JSON.stringify(selectedProducts));
+    formData.append("invoice", values.file);
+    axios({
+      method: "post",
+      url: CUSTOMER_URL.ADD_WARRANTY,
+      data: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
       .then(function (response) {
         loadWarranties();
         setShowSuccess(true);
@@ -88,6 +96,7 @@ export default function WarrantyList() {
           warranty_id: obj["warranty_id"],
           sold_by: obj["sold_by"],
           purchase_date: obj["purchase_date"],
+          status: obj["status"],
           products: [],
         };
       }
@@ -196,29 +205,26 @@ export default function WarrantyList() {
                           </td>
                           <td>
                             <span>No of Products</span>
-                            <p>{}</p>
+                            <p>{warranty?.products?.length || 0}</p>
                           </td>
                           <td>
                             <span>Purchase date</span>
-                            <p>{warranty.purchase_date}</p>
-                          </td>
-                          {/* <td>
-                            <span>Purchase date</span>
                             <p>
-                              {moment(deal.purchase_date).format("DD/MM/YYYY")}
+                              {warranty.purchase_date &&
+                                moment(warranty.purchase_date).format(
+                                  "DD/MM/YYYY"
+                                )}{" "}
+                              &nbsp;
                             </p>
-                          </td> */}
-                          {/* <td>
-                            {deal.status == "PENDING" && (
-                              <div class="status pending">Pending</div>
+                          </td>
+                          <td>
+                            {warranty.status == "APPROVED" && (
+                              <div class="status approved">Active</div>
                             )}
-                            {deal.status == "APPROVED" && (
-                              <div class="status approved">Approved</div>
-                            )}
-                            {deal.status == "REJECTED" && (
+                            {warranty.status == "REJECTED" && (
                               <div class="status rejected">Rejected</div>
                             )}
-                          </td> */}
+                          </td>
                         </tr>
                         <tr class="fold">
                           <td colspan="8">
@@ -366,6 +372,15 @@ export default function WarrantyList() {
                       </div>
                     );
                   })}
+
+                  <input
+                    id="file"
+                    name="file"
+                    type="file"
+                    onChange={(event) => {
+                      setFieldValue("file", event.target.files[0]);
+                    }}
+                  />
 
                   <div>
                     <input
