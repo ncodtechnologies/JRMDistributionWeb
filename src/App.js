@@ -15,7 +15,7 @@ const store = configureStore({
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter basename="/admin">
+      <BrowserRouter>
         <AppRoutes />
         <NotificationContainer />
       </BrowserRouter>
