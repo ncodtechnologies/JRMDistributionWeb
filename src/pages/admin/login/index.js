@@ -7,6 +7,8 @@ import { ADMIN_URL } from "../../../urls/apiUrls";
 import { store } from "../../../store";
 import { useDispatch } from "react-redux";
 import { setUser, setUserData } from "../../../slices/user";
+import { Oval } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
@@ -20,9 +22,11 @@ function AdminLogin() {
   const dispatch = useDispatch();
 
   const [invalidLogin, setInvalidLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const login = (values) => {
     setInvalidLogin(false);
+    setLoading(true);
     axios
       .post(ADMIN_URL.LOGIN, {
         email: values.email,
@@ -42,13 +46,17 @@ function AdminLogin() {
             "JRMDistributionUser",
             JSON.stringify(response?.data?.result?.user)
           );
-          window.location.href = "/home";
+          window.location.reload();
         } else setInvalidLogin(true);
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false);
       });
   };
+
+  const navigate = useNavigate();
 
   return (
     <section id="login">
@@ -62,9 +70,18 @@ function AdminLogin() {
       <div class="rightlogin">
         <div class="content">
           <img src="assets/images/logo.svg" alt="" />
-          <div class="back">
-            <a href="">
-              <i class="mdi mdi-arrow-bottom-left"></i>
+          <div class="">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
+            >
+              <img
+                src="assets/images/icons/back_icon.svg"
+                style={{ width: 20 }}
+              />
             </a>
           </div>
           <h3>ADMIN LOGIN</h3>
@@ -88,7 +105,13 @@ function AdminLogin() {
               <FieldError error={errors.password} />
             </div>
             <button class="btn-primary" type="submit">
-              Login
+              {loading ? (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Oval color="#FFF" height={20} width={20} />
+                </div>
+              ) : (
+                "Login"
+              )}
             </button>
             {invalidLogin && <FieldError error={"Invalid Login"} />}
           </form>

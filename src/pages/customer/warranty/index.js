@@ -1,23 +1,31 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FieldError from "../../../components/FieldError";
 import useScript from "../../../hooks/useScript";
 import HeaderComp from "../../../nav/header";
 import { ADMIN_URL, CUSTOMER_URL, PARTNER_URL } from "../../../urls/apiUrls";
 import { NewWarrantySchema } from "../../../yupSchema/newWarranty";
+import DatePicker from "react-datepicker";
+import { Oval } from "react-loader-spinner";
+import products from "../../../constants/products";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function WarrantyList() {
   useScript("assets/js/custom/deals.js");
 
-  const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
-    initialValues: {},
-    onSubmit(values) {
-      submit(values);
-    },
-    validationSchema: NewWarrantySchema,
-  });
+  const { getFieldProps, handleSubmit, errors, setFieldValue, values } =
+    useFormik({
+      initialValues: {},
+      onSubmit(values) {
+        submit(values);
+      },
+      validationSchema: NewWarrantySchema,
+    });
+
+  const refBtnFile = useRef(null);
 
   const [newDealOpen, setNewDealOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -26,13 +34,6 @@ export default function WarrantyList() {
   const token = localStorage.getItem("JRMDistribution");
 
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const products = [
-    { product_id: 1, name: "Product 1", capacity: 10 },
-    { product_id: 2, name: "Product 2", capacity: 20 },
-    { product_id: 3, name: "Product 3", capacity: 30 },
-    { product_id: 4, name: "Product 4", capacity: 40 },
-    { product_id: 5, name: "Product 5", capacity: 50 },
-  ];
 
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
@@ -63,7 +64,18 @@ export default function WarrantyList() {
     setSerialNo("");
   };
 
-  const submit = (values) => {
+  const [productErr, setProductErr] = useState(false);
+
+  const submit = (_values) => {
+    setProductErr(false);
+    if (selectedProducts.length == 0) {
+      setProductErr(true);
+      return;
+    }
+    let values = { ..._values };
+    values.purchase_date = moment(_values.purchase_date)
+      .format("YYYY-MM-DD")
+      .toString();
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
@@ -81,6 +93,7 @@ export default function WarrantyList() {
     })
       .then(function (response) {
         loadWarranties();
+        window.closeSlide();
         setShowSuccess(true);
       })
       .catch(function (error) {
@@ -96,7 +109,7 @@ export default function WarrantyList() {
           warranty_id: obj["warranty_id"],
           sold_by: obj["sold_by"],
           purchase_date: obj["purchase_date"],
-          status: obj["status"],
+          status: !obj["warranty_product_status_id"] ? "PENDING" : "",
           products: [],
         };
       }
@@ -105,6 +118,8 @@ export default function WarrantyList() {
         product_id: obj["product_id"],
         product_name: obj["product_name"],
         serialNo: obj["serial_no"],
+        start_date: obj["start_date"],
+        end_date: obj["end_date"],
       });
       return acc;
     }, {});
@@ -157,7 +172,7 @@ export default function WarrantyList() {
               }}
               id="newdeal"
             >
-              <i class="fas fa-plus"></i>ACTIVATE WARRANTY
+              ACTIVATE WARRANTY
             </button>
           </div>
           <div class="searchwrap">
@@ -168,9 +183,8 @@ export default function WarrantyList() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button class="btn-filter">
-                <img src="assets/images/icons/filter.png" alt="" />
-              </button>
+              {/*               <button class="btn-filter">
+                <img src="assets/images/icons/filter.png" alt="" />   */}
             </div>
             <button class="btn-primary">Search</button>
           </div>
@@ -178,36 +192,27 @@ export default function WarrantyList() {
             <table class="fold-table">
               <tbody>
                 {warrantyList
-                  // ?.filter(
-                  //   (row) =>
-                  //     row?.company_name
-                  //       ?.toLowerCase()
-                  //       .includes(search.toLowerCase()) ||
-                  //     row?.contact_person
-                  //       ?.toLowerCase()
-                  //       .includes(search.toLowerCase()) ||
-                  //     row?.mobile_no
-                  //       ?.toLowerCase()
-                  //       .includes(search.toLowerCase())
-                  // )
+                  ?.filter((row) =>
+                    row?.sold_by?.toLowerCase().includes(search.toLowerCase())
+                  )
                   ?.map((warranty) => {
                     return (
                       <>
                         <tr class="view">
-                          <td></td>
-                          <td>
-                            <span>Deal No</span>
+                          <td width={30}></td>
+                          <td width={"25%"}>
+                            <span>Warranty No</span>
                             <p>#{warranty.warranty_id}</p>
                           </td>
-                          <td>
+                          <td width={"25%"}>
                             <span>Sold by</span>
                             <p>{warranty.sold_by}</p>
                           </td>
-                          <td>
+                          <td width={"25%"}>
                             <span>No of Products</span>
                             <p>{warranty?.products?.length || 0}</p>
                           </td>
-                          <td>
+                          <td width={"25%"}>
                             <span>Purchase date</span>
                             <p>
                               {warranty.purchase_date &&
@@ -224,6 +229,9 @@ export default function WarrantyList() {
                             {warranty.status == "REJECTED" && (
                               <div class="status rejected">Rejected</div>
                             )}
+                            {warranty.status == "PENDING" && (
+                              <div class="status pending">Pending</div>
+                            )}
                           </td>
                         </tr>
                         <tr class="fold">
@@ -232,17 +240,27 @@ export default function WarrantyList() {
                               {warranty?.products?.map((prod, index) => {
                                 return (
                                   <tr>
-                                    <td>{index + 1}</td>
-                                    <td>
+                                    <td width={20}>{index + 1}</td>
+                                    <td width={"23.5%"}>
                                       <span>Product</span>
                                       <p>{prod.product_name}</p>
                                     </td>
-                                    <td>
+                                    <td width={"23%"}>
                                       <span>Serial No</span>
                                       <p>{prod.serialNo}</p>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td width={"23%"}>
+                                      <span>
+                                        {prod.start_date && "Start Date"}
+                                      </span>
+                                      <p>{prod.start_date}</p>
+                                    </td>
+                                    <td width={"23.5%"}>
+                                      <span>
+                                        {prod.start_date && "End Date"}
+                                      </span>
+                                      <p>{prod.end_date}</p>
+                                    </td>
                                     <td></td>
                                   </tr>
                                 );
@@ -261,13 +279,14 @@ export default function WarrantyList() {
       {newDealOpen && (
         <section id="newdealwrap">
           <div class="newdealform">
-            <a href="javascript:void(0)" class="close">
+            <a href="#" onClick={() => window.closeSlide()} class="close">
               <i class="fas fa-times"></i>
             </a>
             {!showSuccess ? (
               <div class="dealnew">
                 <form onSubmit={handleSubmit}>
                   <h3>ACTIVATE WARRANTY</h3>
+
                   <div class="forminput">
                     <div class="labeldiv">
                       <label>
@@ -291,13 +310,14 @@ export default function WarrantyList() {
                         Purchase Date<span>*</span>
                       </label>
                       <label class="ar">
-                        الرقم المسلسل<span>*</span>
+                        تاريخ الشراء <span>*</span>
                       </label>
                     </div>
-                    <input
-                      type="text"
-                      placeholder="Purchase Date"
-                      {...getFieldProps("purchase_date")}
+                    <DatePicker
+                      selected={values.purchase_date}
+                      onChange={(date) => {
+                        setFieldValue("purchase_date", date);
+                      }}
                     />
                     <FieldError error={errors.purchase_date} />
                   </div>
@@ -341,9 +361,9 @@ export default function WarrantyList() {
                             e.preventDefault();
                             addProduct();
                           }}
-                          class="arrow"
+                          class="btn"
                         >
-                          <i class="fas fa-plus"></i>
+                          <i class="fa-solid fa-plus"></i>
                         </a>
                       </div>
                     </div>
@@ -374,15 +394,36 @@ export default function WarrantyList() {
                   })}
 
                   <input
+                    type="button"
+                    class="btn-rounded"
+                    value={"Attach"}
+                    onClick={(e) => refBtnFile?.current?.click()}
+                  />
+                  <div style={{ marginTop: 10, marginBottom: 15 }}>
+                    {values.file?.name}
+                  </div>
+
+                  <input
                     id="file"
                     name="file"
+                    ref={refBtnFile}
                     type="file"
+                    style={{ visibility: "hidden" }}
                     onChange={(event) => {
                       setFieldValue("file", event.target.files[0]);
                     }}
                   />
 
-                  <div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 20,
+                      width: "90%",
+                    }}
+                  >
+                    <FieldError
+                      error={productErr && "Please select atleast a product"}
+                    />
                     <input
                       type="submit"
                       class="btn-primary"
@@ -393,24 +434,26 @@ export default function WarrantyList() {
                 </form>
               </div>
             ) : (
-              <div class="dealsuccess">
-                <div class="dtls">
-                  <img src="assets/images/icons/checked.png" alt="" />
-                  <p>
-                    Your deal has been submitted successfully <br />
-                    Our team will contact you shortly
-                  </p>
-                  <button
-                    onClick={(e) => {
-                      window.closeSlide();
-                      setNewDealOpen(false);
-                      setShowSuccess(false);
-                    }}
-                  >
-                    Done
-                  </button>
+              <>
+                <div class="dealsuccess">
+                  <div class="dtls">
+                    <img src="assets/images/icons/checked.png" alt="" />
+                    <p>
+                      Your deal has been submitted successfully <br />
+                      Our team will contact you shortly
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        window.closeSlide();
+                        setNewDealOpen(false);
+                        setShowSuccess(false);
+                      }}
+                    >
+                      Done
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </section>

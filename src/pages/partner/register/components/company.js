@@ -23,36 +23,40 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
                 <div class="forminput">
                   <div class="labeldiv">
                     <label>
-                    First Name<span>*</span>
+                      First Name<span>*</span>
                     </label>
                     <label class="ar">
-                    الاسم الأول<span>*</span>
+                      الاسم الأول<span>*</span>
                     </label>
                   </div>
                   <input
                     type="text"
                     value={data?.executive_first_name}
-                    onChange={(e) => onChangeData("executive_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("executive_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
+                  <FieldError error={errors?.executive_first_name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
                     <label>
-                    Last Name<span>*</span>
+                      Last Name<span>*</span>
                     </label>
                     <label class="ar">
-                    اسم العائلة<span>*</span>
+                      اسم العائلة<span>*</span>
                     </label>
                   </div>
                   <input
                     type="text"
                     value={data?.executive_last_name}
-                    onChange={(e) => onChangeData("executive_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("executive_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
+                  <FieldError error={errors?.executive_last_name} />
                 </div>
               </div>
               <div class="col-md-4">
@@ -68,9 +72,11 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
                   <input
                     type="text"
                     value={data?.executive_role}
-                    onChange={(e) => onChangeData("executive_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("executive_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
+                  <FieldError error={errors?.executive_role} />
                 </div>
               </div>
               <div class="col-md-4">
@@ -80,34 +86,33 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
                       Email<span>*</span>
                     </label>
                     <label class="ar">
-                    البريد الألكتروني<span>*</span>
+                      البريد الألكتروني<span>*</span>
                     </label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.executive_email}
-                    onChange={(e) => onChangeData("executive_email", e.target.value)} 
+                    onChange={(e) =>
+                      onChangeData("executive_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.email} />
-
+                  <FieldError error={errors?.executive_email} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.executive_phone}
-                    onChange={(e) => onChangeData("executive_phone", e.target.value)} 
+                    onChange={(e) =>
+                      onChangeData("executive_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.phone} />
+                  <FieldError error={errors?.executive_phone} />
                 </div>
               </div>
             </div>
@@ -130,90 +135,79 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
                 <div class="forminput">
                   <div class="labeldiv">
                     <label>
-                    First Name<span>*</span>
+                      First Name<span></span>
                     </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.vendor_first_name}
-                    onChange={(e) => onChangeData("vendor_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("vendor_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
                     <label>
-                      Last Name<span>*</span>
+                      Last Name<span></span>
                     </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.vendor_last_name}
-                    onChange={(e) => onChangeData("vendor_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("vendor_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.vendor_role}
-                    onChange={(e) => onChangeData("vendor_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("vendor_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.vendor_email}
-                    onChange={(e) => onChangeData("vendor_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("vendor_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.vendor_phone}
-                    onChange={(e) => onChangeData("vendor_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("vendor_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
@@ -235,91 +229,74 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                    First Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label>First Name</label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.sales_first_name}
-                    onChange={(e) => onChangeData("sales_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("sales_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Last Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label>Last Name</label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.sales_last_name}
-                    onChange={(e) => onChangeData("sales_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("sales_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.sales_role}
                     onChange={(e) => onChangeData("sales_role", e.target.value)}
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.sales_email}
-                    onChange={(e) => onChangeData("sales_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("sales_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.sales_phone}
-                    onChange={(e) => onChangeData("sales_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("sales_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
@@ -341,96 +318,81 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                    First Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label>First Name</label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.technical_first_name}
-                    onChange={(e) => onChangeData("technical_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("technical_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Last Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label>Last Name</label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.technical_last_name}
-                    onChange={(e) => onChangeData("technical_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("technical_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.technical_role}
-                    onChange={(e) => onChangeData("technical_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("technical_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.technical_email}
-                    onChange={(e) => onChangeData("technical_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("technical_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.technical_phone}
-                    onChange={(e) => onChangeData("technical_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("technical_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
           </div>
-        </div>  
+        </div>
 
         <div class="formwrap">
           <div class="fwrap">
@@ -447,96 +409,81 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                    First Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label>First Name</label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.service_first_name}
-                    onChange={(e) => onChangeData("service_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("service_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Last Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label>Last Name</label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.service_last_name}
-                    onChange={(e) => onChangeData("service_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("service_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.service_role}
-                    onChange={(e) => onChangeData("service_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("service_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.service_email}
-                    onChange={(e) => onChangeData("service_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("service_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.service_phone}
-                    onChange={(e) => onChangeData("service_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("service_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
           </div>
-        </div>     
+        </div>
 
         <div class="formwrap">
           <div class="fwrap">
@@ -553,96 +500,81 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                    First Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label>First Name</label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.marketting_first_name}
-                    onChange={(e) => onChangeData("marketting_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("marketting_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Last Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label>Last Name</label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.marketting_last_name}
-                    onChange={(e) => onChangeData("marketting_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("marketting_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.marketting_role}
-                    onChange={(e) => onChangeData("marketting_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("marketting_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.marketting_email}
-                    onChange={(e) => onChangeData("marketting_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("marketting_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.marketting_phone}
-                    onChange={(e) => onChangeData("marketting_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("marketting_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
           </div>
-        </div>  
+        </div>
 
         <div class="formwrap">
           <div class="fwrap">
@@ -659,96 +591,81 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                    First Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label>First Name</label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.purchasing_first_name}
-                    onChange={(e) => onChangeData("purchasing_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("purchasing_first_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Last Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label>Last Name</label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.purchasing_last_name}
-                    onChange={(e) => onChangeData("purchasing_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("purchasing_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.purchasing_role}
-                    onChange={(e) => onChangeData("purchasing_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("purchasing_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.purchasing_email}
-                    onChange={(e) => onChangeData("purchasing_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("purchasing_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.purchasing_phone}
-                    onChange={(e) => onChangeData("purchasing_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("purchasing_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
           </div>
-        </div>  
+        </div>
 
         <div class="formwrap">
           <div class="fwrap">
@@ -765,96 +682,84 @@ export default function RegCompanyContacts({ data, onChangeData, errors }) {
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                    First Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                    اسم العائلة<span>*</span>
-                    </label>
+                    <label>First Name</label>
+                    <label class="ar">الاسم الأول</label>
                   </div>
                   <input
                     type="text"
                     value={data?.accounts_payable_first_name}
-                    onChange={(e) => onChangeData("accounts_payable_first_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData(
+                        "accounts_payable_first_name",
+                        e.target.value
+                      )
+                    }
                   />
-                  <FieldError error={errors?.name} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Last Name<span>*</span>
-                    </label>
-                    <label class="ar">
-                      اسم العائلة<span>*</span>
-                    </label>
+                    <label>Last Name</label>
+                    <label class="ar">اسم العائلة</label>
                   </div>
                   <input
                     type="text"
                     value={data?.accounts_payable_last_name}
-                    onChange={(e) => onChangeData("accounts_payable_last_name", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("accounts_payable_last_name", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Role/Title<span>*</span>
-                    </label>
-                    <label class="ar">
-                      المسمى الوظيفي<span>*</span>
-                    </label>
+                    <label>Role/Title</label>
+                    <label class="ar">المسمى الوظيفي</label>
                   </div>
                   <input
                     type="text"
                     value={data?.accounts_payable_role}
-                    onChange={(e) => onChangeData("accounts_payable_role", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("accounts_payable_role", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Email<span>*</span>
-                    </label>
-                    <label class="ar">
-                      البريد الألكتروني<span>*</span>
-                    </label>
+                    <label>Email</label>
+                    <label class="ar">البريد الألكتروني</label>
                   </div>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={data?.accounts_payable_email}
-                    onChange={(e) => onChangeData("accounts_payable_email", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("accounts_payable_email", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="forminput">
                   <div class="labeldiv">
-                    <label>
-                      Phone<span>*</span>
-                    </label>
-                    <label class="ar">
-                      تليفون<span>*</span>
-                    </label>
+                    <label>Phone</label>
+                    <label class="ar">تليفون</label>
                   </div>
-                  <input 
+                  <input
                     type="text"
                     value={data?.accounts_payable_phone}
-                    onChange={(e) => onChangeData("accounts_payable_phone", e.target.value)}
+                    onChange={(e) =>
+                      onChangeData("accounts_payable_phone", e.target.value)
+                    }
                   />
-                  <FieldError error={errors?.title} /> 
                 </div>
               </div>
             </div>
           </div>
-        </div>                           
+        </div>
       </div>
     </>
   );

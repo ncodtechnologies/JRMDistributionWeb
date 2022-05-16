@@ -5,6 +5,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 
 import rootReducer from "./slices";
+import "react-notifications/lib/notifications.css";
+import { NotificationContainer } from "react-notifications";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -13,8 +15,9 @@ const store = configureStore({
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="/admin">
         <AppRoutes />
+        <NotificationContainer />
       </BrowserRouter>
     </Provider>
   );

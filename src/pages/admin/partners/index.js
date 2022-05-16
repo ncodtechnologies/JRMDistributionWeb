@@ -5,7 +5,9 @@ import HeaderComp from "../../../nav/header";
 import { ADMIN_URL, PARTNER_URL } from "../../../urls/apiUrls";
 import { Modal } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
+import FieldError from "../../../components/FieldError";
 
 export default function PartnersList() {
   const navigate = useNavigate();
@@ -22,6 +24,19 @@ export default function PartnersList() {
   const [modalType, setModalType] = useState(0);
   const [selPartnerId, setSelPartnerId] = useState();
 
+  const { status } = useParams();
+
+  useEffect(() => {
+    setSelectedStatus(status);
+    loadPartners(status);
+    loadCount();
+    if (!status) {
+      setSelectedStatus("PENDING");
+      loadPartners("PENDING");
+      loadCount();
+    }
+  }, [status]);
+
   const handleCloseModal = () => {
     setShowModal(false);
     setSelPartnerId(null);
@@ -31,9 +46,13 @@ export default function PartnersList() {
     setSelPartnerId(partner_id);
   };
 
-  const [rejectionReason, setRejectionReason] = useState();
-  const [partnershipLevel, setPartnershipLevel] = useState();
-  const [salesTarget, setSalesTarget] = useState();
+  const currencyFormat = (num) => {
+    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  const [rejectionReason, setRejectionReason] = useState("");
+  const [partnershipLevel, setPartnershipLevel] = useState("");
+  const [salesTarget, setSalesTarget] = useState("");
 
   const approvePartner = () => {
     axios
@@ -46,6 +65,13 @@ export default function PartnersList() {
         handleCloseModal();
         loadPartners(selectedStatus);
         loadCount();
+
+        if (modalType == 2)
+          NotificationManager.success("Partner tier updated!");
+        else if (modalType == 1)
+          NotificationManager.success("Partner Activated!");
+        else if (modalType == 0)
+          NotificationManager.success("Partner Deactivated!");
       })
       .catch(function (error) {
         console.log(error);
@@ -115,10 +141,10 @@ export default function PartnersList() {
     else return <div class="status pending">Pending</div>;
   };
 
-  useEffect(() => {
-    loadPartners(selectedStatus);
-    loadCount();
-  }, [selectedStatus]);
+  // useEffect(() => {
+  //   loadPartners(selectedStatus);
+  //   loadCount();
+  // }, [selectedStatus]);
 
   const [newCount, setNewCount] = useState(0);
   const [activeCount, setActiveCount] = useState(0);
@@ -162,6 +188,8 @@ export default function PartnersList() {
     );
   }, [count]);
 
+  const page = "partners";
+
   return (
     <>
       <HeaderComp activeMenuIndex={0} />
@@ -172,55 +200,27 @@ export default function PartnersList() {
               {selectedStatus == "PENDING" ? (
                 <span>New ({newCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("PENDING");
-                  }}
-                >
+                <Link to={`/${page}/PENDING`}>
                   New(
                   {newCount})
-                </a>
+                </Link>
               )}
               {selectedStatus == "Authorized" ? (
                 <span>Active({activeCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("Authorized");
-                  }}
-                >
-                  Active({activeCount})
-                </a>
+                <Link to={`/${page}/Authorized`}>Active({activeCount})</Link>
               )}
               {selectedStatus == "REJECTED" ? (
                 <span>Rejected({rejectCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("REJECTED");
-                  }}
-                >
-                  Rejected({rejectCount})
-                </a>
+                <Link to={`/${page}/REJECTED`}>Rejected({rejectCount})</Link>
               )}
               {selectedStatus == "Deactivated" ? (
                 <span>Deactivated({deactiveCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("Deactivated");
-                  }}
-                >
+                <Link to={`/${page}/Deactivated`}>
                   Deactivated({deactiveCount})
-                </a>
+                </Link>
               )}
             </div>
             <button
@@ -242,9 +242,8 @@ export default function PartnersList() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button class="btn-filter">
-                <img src="assets/images/icons/filter.png" alt="" />
-              </button>
+              {/*               <button class="btn-filter">
+                <img src="assets/images/icons/filter.png" alt="" />   */}
             </div>
             <button class="btn-primary">Search</button>
           </div>
@@ -288,7 +287,15 @@ export default function PartnersList() {
                         .includes(search.toLowerCase())
                   )
                   .map((row) => (
-                    <tr class="names">
+                    <tr
+                      class="names"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => {
+                        navigate("/partnerDt", {
+                          state: { partner: row },
+                        });
+                      }}
+                    >
                       <td>{row.company_name}</td>
                       <td>{row.email}</td>
                       <td>{row.full_name}</td>
@@ -301,7 +308,7 @@ export default function PartnersList() {
                           ? row.rejection_reason
                           : showStatus(row.partnership)}
                       </td>
-                      <td>
+                      <td align="right" onClick={(e) => e.stopPropagation()}>
                         <Dropdown>
                           {/* <Dropdown.Toggle
                                 variant="transparent"
@@ -395,7 +402,13 @@ export default function PartnersList() {
             style={{ width: "100%" }}
           >
             <img
-              src="assets/images/icons/checked.png"
+              src={
+                modalType == 0
+                  ? "assets/images/icons/reject.svg"
+                  : modalType == 1
+                  ? "assets/images/icons/approve.svg"
+                  : "assets/images/icons/change_tier.svg"
+              }
               alt=""
               style={{ width: 30, margin: 10 }}
             />
@@ -443,6 +456,7 @@ export default function PartnersList() {
                   <option value="Silver">Silver</option>
                   <option value="Platinum">Platinum</option>
                 </select>
+                <FieldError error={partnershipLevel == "" && "Required"} />
               </div>
               <div class="forminput" style={{ width: "100%" }}>
                 <div class="labeldiv">
@@ -455,7 +469,11 @@ export default function PartnersList() {
                   }}
                   value={salesTarget}
                   type="text"
+                  onBlur={() =>
+                    setSalesTarget(currencyFormat(parseInt(salesTarget)))
+                  }
                 />
+                <FieldError error={salesTarget == "" && "Required"} />
               </div>
             </div>
           )}
@@ -477,8 +495,13 @@ export default function PartnersList() {
               onClick={(e) => {
                 e.preventDefault();
                 if (modalType == 0) rejectPartner();
-                else if (modalType == 1) approvePartner();
-                else approvePartner();
+                else if (modalType == 1) {
+                  if (salesTarget != "" && partnershipLevel != "") {
+                    approvePartner();
+                  }
+                } else if (salesTarget != "" && partnershipLevel != "") {
+                  approvePartner();
+                }
               }}
               class="btn-primary"
             >

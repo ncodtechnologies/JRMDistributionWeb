@@ -1,9 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Oval } from "react-loader-spinner";
+import { NotificationManager } from "react-notifications";
 import { useNavigate } from "react-router-dom";
+import FieldError from "../../../components/FieldError";
 import HeaderComp from "../../../nav/header";
 import { PARTNER_URL } from "../../../urls/apiUrls";
-import RegPartnerSchema from "../../../yupSchema/registerPartner";
+import {
+  RegPartnerBasicSchema,
+  RegPartnerCompanySchema,
+  RegPartnerBusinessSchema,
+  RegPartnerAdditionalSchema,
+  RegPartnerPartnershipLevelSchema,
+} from "../../../yupSchema/registerPartner";
 import RegAdditionalInfo from "./components/additionalInfo";
 import RegBasicInfo from "./components/basic";
 import RegBusiness from "./components/business";
@@ -15,6 +24,7 @@ export default function RegisterPartner() {
 
   const [data, setData] = useState({});
   const [errors, setErrors] = useState();
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,32 +36,98 @@ export default function RegisterPartner() {
   };
 
   const submit = () => {
-    RegPartnerSchema.validate(data, { abortEarly: false })
-      .then(() => {
-        setErrors(null);
-        register(data);
-      })
-      .catch(function (err) {
+    register(data);
+  };
+
+  const validatePage = async (index) => {
+    if (index == 0) {
+      try {
+        const i = await RegPartnerBasicSchema.validate(data, {
+          abortEarly: false,
+        });
+        return true;
+      } catch (e) {
         let obj = {};
-        console.log(err?.inner);
-        err?.inner?.forEach((el) => {
+        e?.inner?.forEach((el) => {
           obj[el.path] = el.message;
         });
         setErrors(obj);
-      });
+        return false;
+      }
+    } else if (index == 1) {
+      try {
+        const i = await RegPartnerCompanySchema.validate(data, {
+          abortEarly: false,
+        });
+        return true;
+      } catch (e) {
+        let obj = {};
+        e?.inner?.forEach((el) => {
+          obj[el.path] = el.message;
+        });
+        setErrors(obj);
+        return false;
+      }
+    } else if (index == 2) {
+      try {
+        const i = await RegPartnerBusinessSchema.validate(data, {
+          abortEarly: false,
+        });
+        return true;
+      } catch (e) {
+        let obj = {};
+        e?.inner?.forEach((el) => {
+          obj[el.path] = el.message;
+        });
+        setErrors(obj);
+        return false;
+      }
+    } else if (index == 3) {
+      try {
+        const i = await RegPartnerAdditionalSchema.validate(data, {
+          abortEarly: false,
+        });
+        return true;
+      } catch (e) {
+        let obj = {};
+        e?.inner?.forEach((el) => {
+          obj[el.path] = el.message;
+        });
+        setErrors(obj);
+        return false;
+      }
+    } else if (index == 4) {
+      try {
+        const i = await RegPartnerPartnershipLevelSchema.validate(data, {
+          abortEarly: false,
+        });
+        return true;
+      } catch (e) {
+        let obj = {};
+        e?.inner?.forEach((el) => {
+          obj[el.path] = el.message;
+        });
+        setErrors(obj);
+        return false;
+      }
+    }
   };
 
   const register = (values) => {
+    setLoading(true);
     axios
       .post(PARTNER_URL.REGISTER, {
         ...values,
       })
       .then(function (response) {
+        NotificationManager.success("Partner registration successfull");
         if (roles.includes("ADMIN")) navigate("/partners", { replace: true });
         else navigate("/partner", { replace: true });
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false);
       });
   };
 
@@ -169,9 +245,13 @@ export default function RegisterPartner() {
             {selectedSection < tabHeads.length - 1 && (
               <a
                 href="#"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
-                  setSelectedSection(selectedSection + 1);
+                  const validated = await validatePage(selectedSection);
+                  if (validated) {
+                    setSelectedSection(selectedSection + 1);
+                    setErrors(null);
+                  } //else setErrors({});
                 }}
                 class="btn-primary"
               >
@@ -187,10 +267,17 @@ export default function RegisterPartner() {
                   submit();
                 }}
               >
-                Submit
+                {loading ? (
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Oval color="#FFF" height={20} width={20} />
+                  </div>
+                ) : (
+                  "Submit"
+                )}
               </a>
             )}
           </div>
+          <FieldError error={errors ? "Please fill all required fields" : ""} />
         </div>
       </section>
     </>

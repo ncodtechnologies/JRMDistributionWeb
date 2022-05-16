@@ -8,6 +8,7 @@ import { ADMIN_URL } from "../../../urls/apiUrls";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
+import ConfirmAlert from "../../../components/ConfirmAlert";
 
 export default function DealDt() {
   useScript("assets/js/custom/partner_company.js");
@@ -20,23 +21,24 @@ export default function DealDt() {
     state: { deal },
   } = useLocation();
 
+  console.log(deal);
+
   const navigate = useNavigate();
 
   const [reason, setReason] = useState();
 
   const approve = () => {
     confirmAlert({
-      title: "Confirm Approval",
-      message: "Are you sure?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => approveDeal(),
-        },
-        {
-          label: "No",
-        },
-      ],
+      customUI: ({ onClose }) => {
+        return (
+          <ConfirmAlert
+            handleClose={onClose}
+            title={"Confirm Approval"}
+            description={"Are you sure?"}
+            onAccept={() => approveDeal()}
+          />
+        );
+      },
     });
   };
 
@@ -78,8 +80,20 @@ export default function DealDt() {
       <section class="content">
         <div class="container">
           <div class="breadcrumbs">
-            <a href="">Dashboard</a>
-            <span>Deal Registeration</span>
+            <div class="">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(-1);
+                }}
+              >
+                <img
+                  src="assets/images/icons/back_icon.svg"
+                  style={{ width: 20 }}
+                />
+              </a>
+            </div>
           </div>
           <div class="title">
             <h3>Deal No. #{deal.deal_id}</h3>
@@ -98,18 +112,17 @@ export default function DealDt() {
               <div class="row fold">
                 <table>
                   <tr>
-                    <td></td>
                     <td>
-                      <span>Deal No</span>
-                      <p>#{deal.deal_id}</p>
-                    </td>
-                    <td>
-                      <span>Customer Name</span>
-                      <p>{deal.company_name}</p>
+                      <span>Company Name</span>
+                      <p>{deal.project_for}</p>
                     </td>
                     <td>
                       <span>Contact Person</span>
                       <p>{deal.contact_person}</p>
+                    </td>
+                    <td>
+                      <span>Email</span>
+                      <p>{deal.email}</p>
                     </td>
                     <td>
                       <span>Mobile No.</span>
@@ -121,11 +134,14 @@ export default function DealDt() {
                     </td>
                     <td>
                       <span>Expected Revenue</span>
-                      <p>{deal.revenue}</p>
+                      <p>{deal.project_value}</p>
                     </td>
-                    <td>
-                      <div class="status pending">Pending</div>
-                    </td>
+                    {deal.status == "REJECTED" && (
+                      <td>
+                        <span>Rejection Reason</span>
+                        <p>{deal.rejection_reason}</p>
+                      </td>
+                    )}
                   </tr>
                 </table>
               </div>
@@ -146,17 +162,17 @@ export default function DealDt() {
                 <table>
                   {deal?.products?.map((prod, index) => {
                     return (
-                      <tr>
-                        <td>{index + 1}</td>
-                        <td>
+                      <tr class="border-bottom">
+                        <td width={30}>{index + 1}</td>
+                        <td width={200}>
                           <span>Product</span>
                           <p>{prod.product_name}</p>
                         </td>
-                        <td>
+                        <td width={50}>
                           <span>Qty</span>
                           <p>{prod.qty}</p>
                         </td>
-                        <td>
+                        <td width={50}>
                           <span>Capacity</span>
                           <p>{prod.capacity}</p>
                         </td>
@@ -179,24 +195,28 @@ export default function DealDt() {
         >
           <div class="row float-right">
             <div>
-              <Button
-                style={{
-                  backgroundColor: "#EB4D4B",
-                  marginRight: 20,
-                  width: 150,
-                }}
-                variant="success"
-                onClick={handleShow}
-              >
-                REJECT
-              </Button>
-              <Button
-                style={{ backgroundColor: "#25ACAC", width: 150 }}
-                variant="success"
-                onClick={() => approve()}
-              >
-                APPROVE
-              </Button>
+              {(deal.status == "APPROVED" || deal.status == "PENDING") && (
+                <Button
+                  style={{
+                    backgroundColor: "#EB4D4B",
+                    marginRight: 20,
+                    width: 150,
+                  }}
+                  variant="success"
+                  onClick={handleShow}
+                >
+                  REJECT
+                </Button>
+              )}
+              {(deal.status == "REJECTED" || deal.status == "PENDING") && (
+                <Button
+                  style={{ backgroundColor: "#25ACAC", width: 150 }}
+                  variant="success"
+                  onClick={() => approve()}
+                >
+                  APPROVE
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -209,7 +229,7 @@ export default function DealDt() {
             style={{ width: "100%" }}
           >
             <img
-              src="assets/images/icons/checked.png"
+              src="assets/images/icons/reject.svg"
               alt=""
               style={{ width: 30, margin: 10 }}
             />
@@ -235,6 +255,7 @@ export default function DealDt() {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
+                handleClose();
               }}
               class="btn-border"
             >
@@ -256,20 +277,25 @@ export default function DealDt() {
       </Modal>
     </>
   ) : (
-    <div class="dealsuccess">
-      <div class="dtls">
-        <img src="assets/images/icons/checked.png" alt="" />
-        <p>
-          <b>THE DEAL HAS BEEN APPROVED</b>
-        </p>
-        <button
-          onClick={(e) => {
-            setShowSuccess(false);
-          }}
-        >
-          Done
-        </button>
+    <>
+      <HeaderComp activeMenuIndex={1} />
+      <div class="dealsuccess">
+        <div class="dtls">
+          <img src="assets/images/icons/checked.png" alt="" />
+          <p>
+            <b>THE DEAL HAS BEEN APPROVED</b>
+          </p>
+          <button
+            onClick={(e) => {
+              setShowSuccess(false);
+              handleClose();
+              navigate(-1);
+            }}
+          >
+            Done
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

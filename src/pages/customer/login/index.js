@@ -4,7 +4,8 @@ import { useFormik } from "formik";
 import FieldError from "../../../components/FieldError";
 import { CustomerLoginSchema } from "../../../yupSchema/customerLogin";
 import { CUSTOMER_URL } from "../../../urls/apiUrls";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Oval } from "react-loader-spinner";
 
 function CustomerLogin() {
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
@@ -16,9 +17,11 @@ function CustomerLogin() {
   });
 
   const [invalidLogin, setInvalidLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const login = (values) => {
     setInvalidLogin(false);
+    setLoading(true);
     axios
       .post(CUSTOMER_URL.LOGIN, {
         email: values.email,
@@ -38,29 +41,43 @@ function CustomerLogin() {
             "JRMDistributionUser",
             JSON.stringify(response?.data?.result?.user)
           );
-          window.location.href = "/";
+          window.location.reload();
         } else setInvalidLogin(true);
+        setLoading(false);
       })
       .catch(function (error) {
+        setLoading(false);
         console.log(error);
       });
   };
 
+  const navigate = useNavigate();
+
   return (
     <section id="login">
-      <div class="leftlogin">
+      <div class="leftlogin-customer">
         <div class="content">
           <img src="assets/images/nec.svg" alt="" />
-          <h5>UNIFIED COMMUNICATIONS SYSTEMS</h5>
-          <h6>CUSTOMER IN SUCCESS</h6>
+          <h4 style={{ color: "white", marginTop: 20 }}>The SL2100</h4>
+          <h4 style={{ color: "white" }}>Communications Systems</h4>
+          <h4 style={{ color: "#FFD400" }}>Built-in Brilliance</h4>
         </div>
       </div>
       <div class="rightlogin">
         <div class="content">
           <img src="assets/images/logo.svg" alt="" />
-          <div class="back">
-            <a href="">
-              <i class="mdi mdi-arrow-bottom-left"></i>
+          <div class="">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
+            >
+              <img
+                src="assets/images/icons/back_icon.svg"
+                style={{ width: 20 }}
+              />
             </a>
           </div>
           <h3>LOGIN AS A CUSTOMER</h3>
@@ -84,7 +101,13 @@ function CustomerLogin() {
               <FieldError error={errors.password} />
             </div>
             <button class="btn-primary" type="submit">
-              Login
+              {loading ? (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Oval color="#FFF" height={20} width={20} />
+                </div>
+              ) : (
+                "Login"
+              )}
             </button>
             {invalidLogin && <FieldError error={"Invalid Login"} />}
           </form>

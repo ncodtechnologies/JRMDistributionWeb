@@ -41,7 +41,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   value={data?.annual_sales}
                   onChange={(e) => onChangeData("annual_sales", e.target.value)}
                 />
-                <FieldError error={errors?.name} />
+                <FieldError error={errors?.annual_sales} />
               </div>
             </div>
             <div class="col-md-4">
@@ -57,9 +57,11 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 <input
                   type="text"
                   value={data?.business_percent}
-                  onChange={(e) => onChangeData("business_percent", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("business_percent", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.business_percent} />
               </div>
             </div>
           </div>
@@ -86,9 +88,11 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 <input
                   type="text"
                   value={data?.total_employee}
-                  onChange={(e) => onChangeData("total_employee", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("total_employee", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} />
+                <FieldError error={errors?.total_employee} />
               </div>
             </div>
             <div class="col-md-4">
@@ -104,9 +108,11 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 <input
                   type="text"
                   value={data?.employee_sales}
-                  onChange={(e) => onChangeData("employee_sales", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("employee_sales", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.employee_sales} />
               </div>
             </div>
             <div class="col-md-4">
@@ -122,9 +128,11 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 <input
                   type="text"
                   value={data?.employee_technical}
-                  onChange={(e) => onChangeData("employee_technical", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("employee_technical", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.employee_technical} />
               </div>
             </div>
           </div>
@@ -133,7 +141,10 @@ export default function RegBusiness({ data, onChangeData, errors }) {
 
       <div class="formwrap">
         <div class="ftitle">
-          <h6>APPROXIMATE CUSTOMER BREAKDOWN BY PERCENTAGE (TOTAL SHOULD EQUAL 100%):</h6>
+          <h6>
+            APPROXIMATE CUSTOMER BREAKDOWN BY PERCENTAGE (TOTAL SHOULD EQUAL
+            100%):
+          </h6>
           <h6 class="ar">توزيع العملاء حسب نسبة المبيعات</h6>
         </div>
         <div class="fwrap">
@@ -153,7 +164,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   value={data?.business}
                   onChange={(e) => onChangeData("business", e.target.value)}
                 />
-                <FieldError error={errors?.name} />
+                <FieldError error={errors?.business} />
               </div>
             </div>
             <div class="col-md-4">
@@ -171,7 +182,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   value={data?.enterprise}
                   onChange={(e) => onChangeData("enterprise", e.target.value)}
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.enterprise} />
               </div>
             </div>
             <div class="col-md-4">
@@ -189,7 +200,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   value={data?.technical}
                   onChange={(e) => onChangeData("technical", e.target.value)}
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.technical} />
               </div>
             </div>
             <div class="col-md-4">
@@ -205,9 +216,11 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 <input
                   type="text"
                   value={data?.federal_government}
-                  onChange={(e) => onChangeData("federal_government", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("federal_government", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.federal_government} />
               </div>
             </div>
             <div class="col-md-4">
@@ -223,18 +236,23 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 <input
                   type="text"
                   value={data?.business_others}
-                  onChange={(e) => onChangeData("business_others", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("business_others", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.business_others} />
               </div>
             </div>
           </div>
         </div>
-      </div>     
+      </div>
 
       <div class="formwrap">
         <div class="ftitle">
-          <h6>INDUSTRY FOCUS (CHECK ALL THAT APPLY AND INDICATE PERCENT OF TOTAL BUSINESS)</h6>
+          <h6>
+            INDUSTRY FOCUS (CHECK ALL THAT APPLY AND INDICATE PERCENT OF TOTAL
+            BUSINESS)
+          </h6>
           <h6 class="ar">الأسواق المستهدفة</h6>
         </div>
         <div class="fwrap">
@@ -290,7 +308,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   }}
                 />
                 <label class="form-check-label" for="inlineCheckbox2">
-                  Real Estate(العقارات)
+                  Real Estate (العقارات)
                 </label>
               </div>
             </div>
@@ -312,7 +330,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                 </label>
               </div>
             </div>
-          
+
             <div class="col-md-2">
               <div class="form-check form-check-inline">
                 <input
@@ -345,7 +363,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   }}
                 />
                 <label class="form-check-label" for="inlineCheckbox2">
-                  Restaurants(مطاعم)
+                  Restaurants (مطاعم)
                 </label>
               </div>
             </div>
@@ -363,7 +381,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   }}
                 />
                 <label class="form-check-label" for="inlineCheckbox2">
-                  Communications(الاتصالات)
+                  Communications (الاتصالات)
                 </label>
               </div>
             </div>
@@ -399,7 +417,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   }}
                 />
                 <label class="form-check-label" for="inlineCheckbox2">
-                  Retail(التجزئة)
+                  Retail (التجزئة)
                 </label>
               </div>
             </div>
@@ -435,25 +453,7 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   }}
                 />
                 <label class="form-check-label" for="inlineCheckbox2">
-                  Technology(مؤسسات تقنية)
-                </label>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="inlineCheckbox2"
-                  value="technology"
-                  checked={data?.industry_focus?.includes("technology")}
-                  onChange={(e) => {
-                    if (e.target.checked) onCheckItem(e.target.value);
-                    else onUncheckItem(e.target.value);
-                  }}
-                />
-                <label class="form-check-label" for="inlineCheckbox2">
-                  Technology(مؤسسات تقنية)
+                  Technology (مؤسسات تقنية)
                 </label>
               </div>
             </div>
@@ -500,7 +500,9 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   type="checkbox"
                   id="inlineCheckbox2"
                   value="transportation_logistics"
-                  checked={data?.industry_focus?.includes("transportation_logistics")}
+                  checked={data?.industry_focus?.includes(
+                    "transportation_logistics"
+                  )}
                   onChange={(e) => {
                     if (e.target.checked) onCheckItem(e.target.value);
                     else onUncheckItem(e.target.value);
@@ -518,7 +520,9 @@ export default function RegBusiness({ data, onChangeData, errors }) {
                   type="checkbox"
                   id="inlineCheckbox2"
                   value="entertainment_media"
-                  checked={data?.industry_focus?.includes("entertainment_media")}
+                  checked={data?.industry_focus?.includes(
+                    "entertainment_media"
+                  )}
                   onChange={(e) => {
                     if (e.target.checked) onCheckItem(e.target.value);
                     else onUncheckItem(e.target.value);

@@ -40,9 +40,9 @@ function CustomerForgotPasswordEmailSection({ setEmail, next }) {
   return (
     <div class="content">
       <img src="assets/images/logo.svg" alt="" />
-      <div class="back">
-        <a href="">
-          <i class="mdi mdi-arrow-bottom-left"></i>
+      <div class="">
+        <a href="#">
+          <img src="assets/images/icons/back_icon.svg" style={{ width: 20 }} />
         </a>
       </div>
       <h3>ENTER YOUR EMAIL</h3>

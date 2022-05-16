@@ -9,84 +9,85 @@ import { ADMIN_URL, PARTNER_URL } from "../../../urls/apiUrls";
 import { NewDealSchema } from "../../../yupSchema/newDeal";
 import useDropdownMenu from "react-accessible-dropdown-menu-hook";
 import { Dropdown } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { Oval } from "react-loader-spinner";
+import products from "../../../constants/products";
 
 export default function AdminDeals() {
   useScript("assets/js/custom/deals.js");
 
-  const { buttonProps, itemProps, isOpen, setIsOpen } = useDropdownMenu(2);
-
-  const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
-    initialValues: {},
-    onSubmit(values) {
-      submit(values);
-    },
-    validationSchema: NewDealSchema,
-  });
+  const { getFieldProps, handleSubmit, errors, setFieldValue, values } =
+    useFormik({
+      initialValues: {},
+      onSubmit(values) {
+        submit(values);
+      },
+      validationSchema: NewDealSchema,
+    });
 
   const navigate = useNavigate();
 
   const [newDealOpen, setNewDealOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("JRMDistribution");
-
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const products = [
-    { product_id: 1, name: "Product 1", capacity: 10 },
-    { product_id: 2, name: "Product 2", capacity: 20 },
-    { product_id: 3, name: "Product 3", capacity: 30 },
-    { product_id: 4, name: "Product 4", capacity: 40 },
-    { product_id: 5, name: "Product 5", capacity: 50 },
-  ];
-
-  const [productId, setProductId] = useState("");
-  const [productName, setProductName] = useState("");
-  const [qty, setQty] = useState("");
-  const [capacity, setCapacity] = useState("");
 
   const [dealList, setDealList] = useState([]);
   const [count, setCount] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("PENDING");
 
-  const onProdChange = (e) => {
-    e.preventDefault();
-    setProductId(e.target.value);
-    setProductName(e.target.options[e.target.selectedIndex].text);
+  const [selectedProducts, setSelectedProducts] = useState(
+    products.map((product) => {
+      return {
+        active: false,
+        product_id: product.product_id,
+        name: product.name,
+        capacity: 0,
+        qty: 0,
+      };
+    })
+  );
+
+  const incProduct = (index) => {
+    let _prod = selectedProducts[index];
+    _prod.qty++;
+    let _selProds = [...selectedProducts];
+    _selProds[index] = _prod;
+    setSelectedProducts([..._selProds]);
+  };
+  const decProduct = (index) => {
+    let _prod = selectedProducts[index];
+    if (_prod.qty > 0) _prod.qty--;
+    let _selProds = [...selectedProducts];
+    _selProds[index] = _prod;
+    setSelectedProducts([..._selProds]);
   };
 
-  const remSelProduct = (index) => {
-    let prods = [...selectedProducts];
-    prods.splice(index, 1);
-    setSelectedProducts([...prods]);
-  };
-
-  const addProduct = () => {
-    if (productId == "" || productName == "" || qty == "") return;
-    setSelectedProducts([
-      ...selectedProducts,
-      { product_id: productId, name: productName, capacity, qty },
-    ]);
-    setProductId("");
-    setProductName("");
-    setQty("");
-    setCapacity("");
-  };
-
-  const submit = (values) => {
+  const submit = (_values) => {
+    setLoading(true);
+    let values = { ..._values };
+    values.order_date = moment(_values.order_date)
+      .format("YYYY-MM-DD")
+      .toString();
     axios
       .post(PARTNER_URL.ADD_DEAL, {
         ...values,
-        products: selectedProducts,
+        products: selectedProducts.filter(
+          (el) => el.qty > 0 && el.active == true
+        ),
       })
       .then(function (response) {
         loadDeals();
         loadCount();
         setShowSuccess(true);
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false);
       });
   };
 
@@ -96,11 +97,15 @@ export default function AdminDeals() {
       if (!acc[key]) {
         acc[key] = {
           deal_id: obj["deal_id"],
-          company_name: obj["company_name"],
+          project_name: obj["project_name"],
+          project_for: obj["project_for"],
           contact_person: obj["contact_person"],
+          email: obj["email"],
           mobile_no: obj["mobile_no"],
-          revenue: obj["revenue"],
+          project_value: obj["project_value"],
           purchase_date: obj["purchase_date"],
+          status: obj["status"],
+          rejection_reason: obj["rejection_reason"],
           products: [],
         };
       }
@@ -159,10 +164,25 @@ export default function AdminDeals() {
       });
   };
 
+  const { status } = useParams();
+
   useEffect(() => {
-    loadDeals(selectedStatus);
+    setSelectedStatus(status);
+    loadDeals(status);
     loadCount();
-  }, [selectedStatus]);
+    if (!status) {
+      setSelectedStatus("PENDING");
+      loadDeals("PENDING");
+      loadCount();
+    }
+  }, [status]);
+
+  const page = "deals";
+
+  // useEffect(() => {
+  //   loadDeals(selectedStatus);
+  //   loadCount();
+  // }, [selectedStatus]);
 
   const [newCount, setNewCount] = useState(0);
   const [activeCount, setActiveCount] = useState(0);
@@ -189,6 +209,74 @@ export default function AdminDeals() {
     );
   }, [count]);
 
+  const ProdRow = ({ product, index }) => {
+    return (
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            checked={selectedProducts[index].active == true}
+            onChange={(e) => {
+              if (e.target.checked) {
+                let _selProds = [...selectedProducts];
+                _selProds[index].active = true;
+                setSelectedProducts([..._selProds]);
+              } else {
+                let _selProds = [...selectedProducts];
+                _selProds[index].active = false;
+                setSelectedProducts([..._selProds]);
+              }
+            }}
+          />
+        </td>
+        <td>{product.name}</td>
+        <td></td>
+        <td align="right">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
+          >
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                incProduct(index);
+              }}
+              class="btn btn-light"
+              style={{
+                color: "#005BAA",
+                backgroundColor: "#005BAA1A",
+                borderWidth: 0,
+              }}
+            >
+              <i class="fas fa-plus"></i>
+            </a>
+            <span style={{ padding: 10 }}>{selectedProducts[index].qty}</span>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                decProduct(index);
+              }}
+              class="btn btn-light"
+              style={{
+                color: "#005BAA",
+                backgroundColor: "#005BAA1A",
+                borderWidth: 0,
+              }}
+            >
+              <i class="fas fa-minus"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    );
+  };
+
   return (
     <>
       <HeaderComp activeMenuIndex={1} />
@@ -199,42 +287,20 @@ export default function AdminDeals() {
               {selectedStatus == "PENDING" ? (
                 <span>New ({newCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("PENDING");
-                  }}
-                >
+                <Link to={`/${page}/PENDING`}>
                   New(
                   {newCount})
-                </a>
+                </Link>
               )}
               {selectedStatus == "APPROVED" ? (
                 <span>Active({activeCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("APPROVED");
-                  }}
-                >
-                  Active({activeCount})
-                </a>
+                <Link to={`/${page}/APPROVED`}>Active({activeCount})</Link>
               )}
               {selectedStatus == "REJECTED" ? (
                 <span>Rejected({rejectCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("REJECTED");
-                  }}
-                >
-                  Rejected({rejectCount})
-                </a>
+                <Link to={`/${page}/REJECTED`}>Rejected({rejectCount})</Link>
               )}
             </div>
             <button
@@ -257,14 +323,25 @@ export default function AdminDeals() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button class="btn-filter">
-                <img src="assets/images/icons/filter.png" alt="" />
-              </button>
+              {/*               <button class="btn-filter">
+                <img src="assets/images/icons/filter.png" alt="" />   */}
             </div>
             <button class="btn-primary">Search</button>
           </div>
+
           <div class="tabledeal">
-            <table class="fold-table">
+            <table class="fold-table" style={{ borderCollapse: "collapse" }}>
+              <thead>
+                <tr class="names">
+                  <td>Company Name</td>
+                  <td>Contact Person</td>
+                  <td>Email</td>
+                  <td>Mobile No</td>
+                  <td>Expected Revenue</td>
+                  {selectedStatus == "REJECTED" && <td>Reason</td>}
+                  <td></td>
+                </tr>
+              </thead>
               <tbody>
                 {dealList
                   ?.filter(
@@ -279,84 +356,50 @@ export default function AdminDeals() {
                         ?.toLowerCase()
                         .includes(search.toLowerCase())
                   )
-                  .map((deal) => {
-                    return (
-                      <>
-                        <tr class="view">
-                          <td></td>
-                          <td>
-                            <span>Deal No</span>
-                            <p>#{deal.deal_id}</p>
-                          </td>
-                          <td>
-                            <span>Customer Name</span>
-                            <p>{deal.company_name}</p>
-                          </td>
-                          <td>
-                            <span>Contact Person</span>
-                            <p>{deal.contact_person}</p>
-                          </td>
-                          <td>
-                            <span>Mobile No.</span>
-                            <p>{deal.mobile_no}</p>
-                          </td>
-                          <td>
-                            <span>Purchase date</span>
-                            <p>
-                              {moment(deal.purchase_date).format("DD/MM/YYYY")}
-                            </p>
-                          </td>
-                          <td>
-                            <span>Expected Revenue</span>
-                            <p>{deal.revenue}</p>
-                          </td>
-                          <td>
-                            <Dropdown>
-                              {/* <Dropdown.Toggle
-                                variant="transparent"
-                                id="dropdown-basic"
-                                style={{ color: "#aaa" }}
-                                as={(e) => (
-                                  <a
-                                    href="#"
-                                    style={{ color: "#aaa" }}
-                                    onClick={(_e) => {
-                                      _e.preventDefault();
-                                      e.onClick(_e);
-                                    }}
-                                  >
-                                    <i class="fas fa-ellipsis-h"></i>
-                                  </a>
-                                )}
-                              >
-                                <i class="fas fa-ellipsis-h"></i>
-                              </Dropdown.Toggle> */}
-                              <Dropdown.Toggle
-                                variant="transparent"
-                                id="dropdown-basic"
-                                style={{ color: "#aaa" }}
-                              >
-                                <i class="fas fa-ellipsis-h"></i>
-                              </Dropdown.Toggle>
+                  .map((row) => (
+                    <tr
+                      class="names"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => {
+                        navigate("/dealDt", {
+                          state: { deal: row },
+                        });
+                      }}
+                    >
+                      <td>{row.project_for}</td>
+                      <td>{row.contact_person}</td>
+                      <td>{row.email}</td>
+                      <td>{row.mobile_no}</td>
+                      <td>{row.project_value}</td>
+                      {selectedStatus == "REJECTED" && (
+                        <td>{row.rejection_reason}</td>
+                      )}
+                      <td align="right" onClick={(e) => e.stopPropagation()}>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="transparent"
+                            id="dropdown-basic"
+                            style={{ color: "#aaa" }}
+                          >
+                            <i class="fas fa-ellipsis-h"></i>
+                          </Dropdown.Toggle>
 
-                              <Dropdown.Menu>
-                                <Dropdown.Item
-                                  href="#"
-                                  onClick={(e) => {
-                                    navigate("/dealDt", {
-                                      state: { deal },
-                                    });
-                                  }}
-                                >
-                                  View Details
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
-                        </tr>
-                      </>
-                    );
-                  })}
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              href="#"
+                              onClick={(e) => {
+                                navigate("/dealDt", {
+                                  state: { deal: row },
+                                });
+                              }}
+                            >
+                              View Details
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -365,7 +408,7 @@ export default function AdminDeals() {
       {newDealOpen && (
         <section id="newdealwrap">
           <div class="newdealform">
-            <a href="javascript:void(0)" class="close">
+            <a href="#" onClick={() => window.closeSlide()} class="close">
               <i class="fas fa-times"></i>
             </a>
             {!showSuccess ? (
@@ -375,18 +418,35 @@ export default function AdminDeals() {
                   <div class="forminput">
                     <div class="labeldiv">
                       <label>
-                        Company Name<span>*</span>{" "}
+                        Project Name<span>*</span>{" "}
                       </label>
                       <label class="ar">
-                        اسم الشركة<span>*</span>
+                        اسم المشروع<span>*</span>
                       </label>
                     </div>
                     <input
                       type="text"
-                      placeholder="Company Name"
-                      {...getFieldProps("company_name")}
+                      placeholder="Project Name"
+                      {...getFieldProps("project_name")}
                     />
-                    <FieldError error={errors.company_name} />
+                    <FieldError error={errors.project_name} />
+                  </div>
+
+                  <div class="forminput">
+                    <div class="labeldiv">
+                      <label>
+                        Project For<span>*</span>{" "}
+                      </label>
+                      <label class="ar">
+                        اسم الجهة التابعة<span>*</span>
+                      </label>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Project For"
+                      {...getFieldProps("project_for")}
+                    />
+                    <FieldError error={errors.project_for} />
                   </div>
 
                   <div class="forminput">
@@ -409,23 +469,6 @@ export default function AdminDeals() {
                   <div class="forminput">
                     <div class="labeldiv">
                       <label>
-                        Email<span>*</span>
-                      </label>
-                      <label class="ar">
-                        البريد الالكتروني<span>*</span>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Email"
-                      {...getFieldProps("email")}
-                    />
-                    <FieldError error={errors.email} />
-                  </div>
-
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
                         Mobile No.<span>*</span>
                       </label>
                       <label class="ar">
@@ -443,134 +486,144 @@ export default function AdminDeals() {
                   <div class="forminput">
                     <div class="labeldiv">
                       <label>
-                        Expected Revenue<span>*</span>
+                        Email<span>*</span>
                       </label>
                       <label class="ar">
-                        العائد المالي المتوقع<span>*</span>
+                        البريد الالكتروني<span>*</span>
                       </label>
                     </div>
                     <input
                       type="text"
-                      placeholder="revenue"
-                      {...getFieldProps("revenue")}
+                      placeholder="Email"
+                      {...getFieldProps("email")}
                     />
-                    <FieldError error={errors.revenue} />
+                    <FieldError error={errors.email} />
                   </div>
 
                   <div class="forminput">
                     <div class="labeldiv">
                       <label>
-                        Products<span>*</span>
+                        Expected Project Value<span>*</span>
                       </label>
-                      <label class="ar pad55">
-                        المنتجات<span>*</span>
+                      <label class="ar">
+                        القيمة المتوقعة للمشروع<span>*</span>
                       </label>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <select
-                          onChange={(e) => onProdChange(e)}
-                          value={productId}
-                        >
-                          <option value={null}>Select Product</option>
-                          {products?.map((el) => (
-                            <option value={el.product_id}>{el.name}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div class="col-md-3">
-                        <input
-                          type="text"
-                          value={capacity}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            setCapacity(e.target.value);
-                          }}
-                          placeholder="Capacity"
-                        />
-                      </div>
-                      <div class="col-md-2">
-                        <input
-                          type="text"
-                          value={qty}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            setQty(e.target.value);
-                          }}
-                          placeholder="Qty"
-                        />
-                      </div>
-                      <div class="col-md-1">
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            addProduct();
-                          }}
-                          class="arrow"
-                        >
-                          <i class="fas fa-plus"></i>
-                        </a>
-                      </div>
-                    </div>
+                    <input
+                      type="text"
+                      placeholder="Expected Project Value"
+                      {...getFieldProps("project_value")}
+                    />
+                    <FieldError error={errors.project_value} />
                   </div>
-                  {selectedProducts?.map((el, index) => {
-                    return (
-                      <div class="row product-selected">
-                        <div class="col-md-6">
-                          <span>{el.name}</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span>{el.capacity}</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span>{el.qty}</span>
-                        </div>
-                        <div class="col-md-1">
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              remSelProduct(index);
-                            }}
-                            style={{ color: "red" }}
-                          >
-                            <i class="fas fa-times"></i>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  })}
+
+                  <div class="forminput">
+                    <div class="labeldiv">
+                      <label>
+                        Expected Order Date<span>*</span>
+                      </label>
+                      <label class="ar">
+                        الموعد المتوقع لطلب الشراء<span>*</span>
+                      </label>
+                    </div>
+                    <DatePicker
+                      selected={values.order_date}
+                      onChange={(date) => {
+                        setFieldValue("order_date", date);
+                      }}
+                    />
+                    <FieldError error={errors.order_date} />
+                  </div>
+
+                  <div class="newdealsectiontitle">System</div>
 
                   <div>
-                    <input
+                    <table>
+                      {products?.map((product, index) => {
+                        return (
+                          product.category == 1 && (
+                            <ProdRow product={product} index={index} />
+                          )
+                        );
+                      })}
+                    </table>
+                  </div>
+
+                  <div class="newdealsectiontitle">Telephone Sets</div>
+
+                  <div>
+                    <table>
+                      {products?.map((product, index) => {
+                        return (
+                          product.category == 2 && (
+                            <ProdRow product={product} index={index} />
+                          )
+                        );
+                      })}
+                    </table>
+                  </div>
+
+                  <div class="forminput">
+                    <div class="labeldiv">
+                      <label>Notes</label>
+                      <label class="ar">ملاحظات</label>
+                    </div>
+                    <textarea
+                      type="text"
+                      placeholder="Notes"
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setFieldValue("notes", e.target.value);
+                      }}
+                    >
+                      {values.notes}
+                    </textarea>
+                    <FieldError error={errors.notes} />
+                  </div>
+
+                  <div>
+                    <button
                       type="submit"
                       class="btn-primary"
                       // onClick={() => setShowSuccess(true)}
-                      value="SUBMIT"
-                    />
+                    >
+                      {loading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Oval color="#FFF" height={20} width={20} />
+                        </div>
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
                   </div>
                 </form>
               </div>
             ) : (
-              <div class="dealsuccess">
-                <div class="dtls">
-                  <img src="assets/images/icons/checked.png" alt="" />
-                  <p>
-                    Your deal has been submitted successfully <br />
-                    Our team will contact you shortly
-                  </p>
-                  <button
-                    onClick={(e) => {
-                      window.closeSlide();
-                      setNewDealOpen(false);
-                      setShowSuccess(false);
-                    }}
-                  >
-                    Done
-                  </button>
+              <>
+                <div class="dealsuccess">
+                  <div class="dtls">
+                    <img src="assets/images/icons/checked.png" alt="" />
+                    <p>
+                      Your deal has been submitted successfully <br />
+                      Our team will contact you shortly
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        window.closeSlide();
+                        setNewDealOpen(false);
+                        setShowSuccess(false);
+                      }}
+                    >
+                      Done
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </section>

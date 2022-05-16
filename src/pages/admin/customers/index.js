@@ -11,6 +11,7 @@ import useDropdownMenu from "react-accessible-dropdown-menu-hook";
 import { Alert, Dropdown, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import ConfirmAlert from "../../../components/ConfirmAlert";
 
 export default function AdminCustomer() {
   const { buttonProps, itemProps, isOpen, setIsOpen } = useDropdownMenu(2);
@@ -79,17 +80,16 @@ export default function AdminCustomer() {
 
   const activateCustomer = (customer_id) => {
     confirmAlert({
-      title: "Confirm Approval",
-      message: "Are you sure?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => approve(customer_id),
-        },
-        {
-          label: "No",
-        },
-      ],
+      customUI: ({ onClose }) => {
+        return (
+          <ConfirmAlert
+            handleClose={onClose}
+            title={"Confirm Approval"}
+            description={"Are you sure?"}
+            onAccept={() => approve(customer_id)}
+          />
+        );
+      },
     });
   };
 
@@ -183,7 +183,8 @@ export default function AdminCustomer() {
         status: "APPROVED",
       })
       .then(function (response) {
-        loadCustomers(selectedStatus);
+        setSelectedStatus("PENDING");
+        loadCustomers("PENDING");
         loadCount();
         setEditRow(null);
         setNewRow(null);
@@ -272,40 +273,58 @@ export default function AdminCustomer() {
             />
           </div>
         </td>
-        <td>
-          <button
-            class="btn"
-            onClick={() => {
-              if (!customer_id) {
-                registerCustomer({
-                  company_name: companyName,
-                  full_name: customerName,
-                  email,
-                  phone,
-                  password: "PASSWORD",
-                });
-              } else {
-                updateCustomer({
-                  company_name: companyName,
-                  full_name: customerName,
-                  email,
-                  phone,
-                  customer_id,
-                });
-              }
+        <td style={{ verticalAlign: "top" }}>
+          <div
+            style={{
+              width: 60,
+              display: "flex",
+              justifyContent: "space-around",
+              height: "100%",
+              marginTop: 8,
             }}
           >
-            <i class="fa fa-check"></i>
-          </button>
-          <button
-            class="btn"
-            onClick={() => {
-              setEditRow(null);
-              setNewRow(null);
-            }}
-          >
-            <i class="fa fa-times"></i>
-          </button>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setEditRow(null);
+                setNewRow(null);
+              }}
+            >
+              <img
+                src="/assets/images/icons/red_cross.svg"
+                style={{ width: 20 }}
+              />
+            </a>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (!customer_id) {
+                  registerCustomer({
+                    company_name: companyName,
+                    full_name: customerName,
+                    email,
+                    phone,
+                    password: "PASSWORD",
+                  });
+                } else {
+                  updateCustomer({
+                    company_name: companyName,
+                    full_name: customerName,
+                    email,
+                    phone,
+                    customer_id,
+                  });
+                }
+              }}
+            >
+              <img
+                src="/assets/images/icons/green_tick.svg"
+                style={{ width: 20 }}
+              />
+            </a>
+          </div>
         </td>
       </tr>
     );
@@ -396,9 +415,8 @@ export default function AdminCustomer() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button class="btn-filter">
-                <img src="assets/images/icons/filter.png" alt="" />
-              </button>
+              {/*               <button class="btn-filter">
+                <img src="assets/images/icons/filter.png" alt="" />   */}
             </div>
             <button class="btn-primary">Search</button>
           </div>
@@ -449,7 +467,7 @@ export default function AdminCustomer() {
                           selectedStatus == "REJECTED") && (
                           <td>{row.rejection_reason}</td>
                         )}
-                        <td>
+                        <td align="right">
                           <Dropdown>
                             <Dropdown.Toggle
                               variant="transparent"
@@ -519,7 +537,7 @@ export default function AdminCustomer() {
             style={{ width: "100%" }}
           >
             <img
-              src="assets/images/icons/checked.png"
+              src={"assets/images/icons/reject.svg"}
               alt=""
               style={{ width: 30, margin: 10 }}
             />

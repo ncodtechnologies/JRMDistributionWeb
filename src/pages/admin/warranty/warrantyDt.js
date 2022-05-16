@@ -1,15 +1,16 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useScript from "../../../hooks/useScript";
 import HeaderComp from "../../../nav/header";
 import { ADMIN_URL } from "../../../urls/apiUrls";
-import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
+import RejectionPopup from "./components/rejection";
+import ActivationPopup from "./components/activation";
 
-export default function DealDt() {
+export default function WarrantyDt() {
   useScript("assets/js/custom/partner_company.js");
 
   const [showSuccess, setShowSuccess] = useState(false);
@@ -17,72 +18,119 @@ export default function DealDt() {
   const token = localStorage.getItem("JRMDistribution");
 
   const {
-    state: { deal },
+    state: { warranty_id, status_id, status },
   } = useLocation();
+
+  const statusLabel =
+    status == "PENDING"
+      ? "WARRANTY"
+      : status == "ACTIVE" || status == "EXPIRED"
+      ? "ACTIVATION"
+      : "REJECTION";
+
+  const [warrantyDt, setWarrantyDt] = useState([{}]);
+  const [checkedList, setCheckedList] = useState([]);
+  const [selWarrantyProdId, setSelWarrantyProdId] = useState();
+  const [successMsg, setSuccessMsg] = useState();
+
+  const loadWarrantyDt = (warranty_id, status_id) => {
+    axios
+      .post(
+        ADMIN_URL.GET_WARRANTY_DT,
+        {
+          warranty_id,
+          status_id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        setWarrantyDt([...response.data.warranty]);
+        window.setTableOnClick();
+      })
+      .catch(function (error) {
+        console.log(error);
+        console.log("errorr");
+      });
+  };
+
+  useEffect(() => {
+    loadWarrantyDt(warranty_id, status_id);
+  }, [warranty_id]);
 
   const navigate = useNavigate();
 
-  const [reason, setReason] = useState();
-
-  const approve = () => {
-    confirmAlert({
-      title: "Confirm Approval",
-      message: "Are you sure?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => approveDeal(),
-        },
-        {
-          label: "No",
-        },
-      ],
-    });
-  };
-
-  const approveDeal = () => {
+  const activate = (warranty_product_ids, startDate, endDate) => {
     axios
-      .post(ADMIN_URL.APPROVE_DEAL, {
-        deal_id: deal.deal_id,
+      .post(ADMIN_URL.ACTIVATE_WARRANTY, {
+        products: warranty_product_ids,
+        startDate: moment(startDate).format("YYYY-MM-DD").toString(),
+        endDate: moment(endDate).format("YYYY-MM-DD").toString(),
       })
       .then(function (response) {
+        handleClose();
         setShowSuccess(true);
+        setSuccessMsg("THE WARRANTY HAS BEEN ACTIVATED");
       })
       .catch(function (error) {
         console.log(error);
       });
   };
 
-  const rejectDeal = () => {
+  const reject = (warranty_product_ids, reason, type) => {
     axios
-      .post(ADMIN_URL.REJECT_DEAL, {
-        deal_id: deal.deal_id,
+      .post(ADMIN_URL.REJECT_WARRANTY, {
+        products: warranty_product_ids,
         reason,
+        type,
       })
       .then(function (response) {
-        navigate(-1);
+        handleClose();
+        setShowSuccess(true);
+        setSuccessMsg(
+          `THE WARRANTY HAS BEEN ${type == 0 ? "DEACTIVATED" : "REJECTED"}`
+        );
       })
       .catch(function (error) {
         console.log(error);
       });
   };
 
-  const [showRejection, setShowRejection] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState(false);
 
-  const handleClose = () => setShowRejection(false);
-  const handleShow = () => setShowRejection(true);
+  const handleClose = () => setShowModal(false);
+  const handleShow = (type) => {
+    setShowModal(true);
+    setModalType(type);
+  };
 
   return !showSuccess ? (
     <>
-      <HeaderComp activeMenuIndex={1} />
+      <HeaderComp activeMenuIndex={3} />
       <section class="content">
         <div class="container">
           <div class="breadcrumbs">
-            <a href="">Dashboard</a>
-            <span>Deal Registeration</span>
+            <div class="">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(-1);
+                }}
+              >
+                <img
+                  src="assets/images/icons/back_icon.svg"
+                  style={{ width: 20 }}
+                />
+              </a>
+            </div>
           </div>
           <div class="title">
-            <h3>Deal No. #{deal.deal_id}</h3>
+            <h3>
+              {statusLabel} No. #{warranty_id}
+            </h3>
           </div>
 
           <div class="formwrap">
@@ -91,43 +139,62 @@ export default function DealDt() {
                 <div class="ftitle col-md-12">
                   <h6>
                     <i class="fas fa-caret-right"></i>
-                    &nbsp;DEAL INFO
+                    &nbsp;WARRANTY INFO
                   </h6>
                 </div>
               </div>
-              <div class="row fold">
+              <div class="row fold open">
                 <table>
                   <tr>
-                    <td></td>
                     <td>
-                      <span>Deal No</span>
-                      <p>#{deal.deal_id}</p>
+                      <span>Customer</span>
+                      <p>{warrantyDt[0].customer}</p>
                     </td>
                     <td>
-                      <span>Customer Name</span>
-                      <p>{deal.company_name}</p>
+                      <span>Sold By</span>
+                      <p>{warrantyDt[0].sold_by}</p>
                     </td>
                     <td>
-                      <span>Contact Person</span>
-                      <p>{deal.contact_person}</p>
-                    </td>
-                    <td>
-                      <span>Mobile No.</span>
-                      <p>{deal.mobile_no}</p>
+                      <span>No of Products</span>
+                      <p>{warrantyDt.length}</p>
                     </td>
                     <td>
                       <span>Purchase date</span>
-                      <p>{moment(deal.purchase_date).format("DD/MM/YYYY")}</p>
-                    </td>
-                    <td>
-                      <span>Expected Revenue</span>
-                      <p>{deal.revenue}</p>
-                    </td>
-                    <td>
-                      <div class="status pending">Pending</div>
+                      <p>
+                        {moment(warrantyDt[0].purchase_date).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </p>
                     </td>
                   </tr>
                 </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="forminput">
+                    <ul class="docfile">
+                      <li>
+                        <img src="assets/images/icons/pdf.png" alt="" />
+                        <span>Invoice</span>
+                        <a
+                          href={`https://jrm.com.eg/distribution/uploads/warranty/${warrantyDt[0]?.invoice}`}
+                          target="_blank"
+                        >
+                          <img
+                            style={{ height: 15 }}
+                            src="assets/images/icons/download.svg"
+                            alt=""
+                          />
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -142,27 +209,145 @@ export default function DealDt() {
                   </h6>
                 </div>
               </div>
-              <div class="row fold">
+              <div class="row fold open">
                 <table>
-                  {deal?.products?.map((prod, index) => {
+                  {warrantyDt?.map((prod, index) => {
+                    const isNew = prod.action == null;
+                    const isActive = prod.action == 1;
+                    const isDeactive = prod.action == 0 || prod.action == -1;
+                    const isExpired = isActive
+                      ? moment().diff(moment(prod.end_date), "days") > 0
+                        ? true
+                        : false
+                      : false;
                     return (
-                      <tr>
-                        <td>{index + 1}</td>
-                        <td>
+                      <tr
+                        style={{
+                          borderBottomStyle: "solid",
+                          borderBottomColor: "rgb(225,225,225)",
+                          borderBottomWidth: 1,
+                        }}
+                      >
+                        <td width={30}>
+                          <div class="">
+                            <input
+                              type="checkbox"
+                              id="inlineCheckbox2"
+                              checked={checkedList.includes(
+                                prod.warranty_product_id
+                              )}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setCheckedList([
+                                    ...checkedList,
+                                    prod.warranty_product_id,
+                                  ]);
+                                } else {
+                                  let _list = [...checkedList];
+                                  const i = checkedList.findIndex(
+                                    (el) => el == prod.warranty_product_id
+                                  );
+                                  if (i > -1) {
+                                    _list.splice(i, 1);
+                                    setCheckedList([..._list]);
+                                  }
+                                }
+                              }}
+                            />
+                          </div>
+                        </td>
+                        <td width={25}>{index + 1}</td>
+                        <td width={200}>
                           <span>Product</span>
-                          <p>{prod.product_name}</p>
+                          <p>{prod.product}</p>
                         </td>
+                        <td width={200}>
+                          <span>Serial No.</span>
+                          <p>{prod.serial_no}</p>
+                        </td>
+                        {prod.start_date ? (
+                          <td width={200}>
+                            <span>Start Date</span>
+                            <p>
+                              {moment(prod.start_date).format("DD/MM/YYYY")}
+                            </p>
+                          </td>
+                        ) : (
+                          <td />
+                        )}
+                        {prod.end_date ? (
+                          <td width={200}>
+                            <span>End Date</span>
+                            <p
+                              style={
+                                moment().diff(moment(prod.end_date), "days") > 0
+                                  ? { color: "red" }
+                                  : {}
+                              }
+                            >
+                              {moment(prod.end_date).format("DD/MM/YYYY")}
+                            </p>
+                          </td>
+                        ) : (
+                          <td />
+                        )}
+                        <td></td>
                         <td>
-                          <span>Qty</span>
-                          <p>{prod.qty}</p>
+                          <div style={{ float: "right" }}>
+                            {isExpired && (
+                              <a
+                                href="#"
+                                class="btn-link-success"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setCheckedList([prod.warranty_product_id]);
+                                  handleShow(1);
+                                }}
+                              >
+                                RENEW
+                              </a>
+                            )}
+                            {isActive && !isExpired && (
+                              <a
+                                href="#"
+                                class="btn-link-reject"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setCheckedList([prod.warranty_product_id]);
+                                  handleShow(0);
+                                }}
+                              >
+                                DEACTIVATE
+                              </a>
+                            )}
+                            {isNew && (
+                              <a
+                                href="#"
+                                class="btn-link-reject"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setCheckedList([prod.warranty_product_id]);
+                                  handleShow(-1);
+                                }}
+                              >
+                                REJECT
+                              </a>
+                            )}
+                            {(isNew || isDeactive) && (
+                              <a
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setCheckedList([prod.warranty_product_id]);
+                                  handleShow(1);
+                                }}
+                                href="#"
+                                class="btn-link-success"
+                              >
+                                ACTIVATE
+                              </a>
+                            )}
+                          </div>
                         </td>
-                        <td>
-                          <span>Capacity</span>
-                          <p>{prod.capacity}</p>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                       </tr>
                     );
                   })}
@@ -177,99 +362,118 @@ export default function DealDt() {
           class="container fixed-bottom"
           style={{ height: 70, backgroundColor: "#FAFBFD", paddingTop: 15 }}
         >
-          <div class="row float-right">
-            <div>
-              <Button
-                style={{
-                  backgroundColor: "#EB4D4B",
-                  marginRight: 20,
-                  width: 150,
-                }}
-                variant="success"
-                onClick={handleShow}
-              >
-                REJECT
-              </Button>
-              <Button
-                style={{ backgroundColor: "#25ACAC", width: 150 }}
-                variant="success"
-                onClick={() => approve()}
-              >
-                APPROVE
-              </Button>
+          {checkedList.length > 0 && (
+            <div class="row float-right">
+              <div>
+                {status == "ACTIVE" && (
+                  <Button
+                    style={{
+                      backgroundColor: "#EB4D4B",
+                      marginRight: 20,
+                      width: 150,
+                    }}
+                    variant="success"
+                    onClick={(e) => {
+                      setSelWarrantyProdId(null);
+                      handleShow(0);
+                    }}
+                  >
+                    DEACTIVATE
+                  </Button>
+                )}
+                {status == "PENDING" && (
+                  <Button
+                    style={{
+                      backgroundColor: "#EB4D4B",
+                      marginRight: 20,
+                      width: 150,
+                    }}
+                    variant="success"
+                    onClick={(e) => {
+                      setSelWarrantyProdId(null);
+                      handleShow(-1);
+                    }}
+                  >
+                    REJECT
+                  </Button>
+                )}
+                {status == "PENDING" && (
+                  <Button
+                    style={{ backgroundColor: "#25ACAC", width: 150 }}
+                    variant="success"
+                    onClick={(e) => {
+                      setSelWarrantyProdId(null);
+                      handleShow(1);
+                    }}
+                  >
+                    ACTIVATE
+                  </Button>
+                )}
+                {status == "EXPIRED" && (
+                  <Button
+                    style={{ backgroundColor: "#25ACAC", width: 150 }}
+                    variant="success"
+                    onClick={(e) => {
+                      setSelWarrantyProdId(null);
+                      handleShow(1);
+                    }}
+                  >
+                    RENEW
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
-      <Modal show={showRejection} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose}>
         <Modal.Body>
-          <div
-            class="row d-flex justify-content-center"
-            style={{ width: "100%" }}
-          >
-            <img
-              src="assets/images/icons/checked.png"
-              alt=""
-              style={{ width: 30, margin: 10 }}
+          {(modalType == 0 || modalType == -1) && (
+            <RejectionPopup
+              checkedList={checkedList}
+              reject={reject}
+              selWarrantyProdId={selWarrantyProdId}
+              modalType={modalType}
+              handleClose={handleClose}
+              selProducts={warrantyDt.filter((el) =>
+                checkedList.includes(el.warranty_product_id)
+              )}
             />
-            <div class="w-100"></div>
-            <h6>DEAL REJECTION</h6>
-          </div>
-
-          <div class="row" style={{ padding: "10px 20px 0px 20px" }}>
-            <div class="forminput" style={{ width: "100%" }}>
-              <div class="labeldiv">
-                <label>Reason</label>
-              </div>
-              <textarea
-                onChange={(e) => setReason(e.target.value)}
-                value={reason}
-                style={{ borderRadius: 3, borderColor: "#191E3530" }}
-              />
-            </div>
-          </div>
-
-          <div class="btnreg">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-              class="btn-border"
-            >
-              CANCEL
-            </a>
-
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                rejectDeal();
-              }}
-              class="btn-primary"
-            >
-              SAVE
-            </a>
-          </div>
+          )}
+          {modalType == 1 && (
+            <ActivationPopup
+              checkedList={checkedList}
+              activate={activate}
+              selWarrantyProdId={selWarrantyProdId}
+              handleClose={handleClose}
+              selProducts={warrantyDt.filter((el) =>
+                checkedList.includes(el.warranty_product_id)
+              )}
+            />
+          )}
         </Modal.Body>
       </Modal>
     </>
   ) : (
-    <div class="dealsuccess">
-      <div class="dtls">
-        <img src="assets/images/icons/checked.png" alt="" />
-        <p>
-          <b>THE DEAL HAS BEEN APPROVED</b>
-        </p>
-        <button
-          onClick={(e) => {
-            setShowSuccess(false);
-          }}
-        >
-          Done
-        </button>
+    <>
+      <HeaderComp activeMenuIndex={3} />
+      <div class="dealsuccess">
+        <div class="dtls">
+          <img src="assets/images/icons/checked.png" alt="" />
+          <p>
+            <b>{successMsg}</b>
+          </p>
+          <button
+            onClick={(e) => {
+              setShowSuccess(false);
+              navigate(-1);
+            }}
+          >
+            Done
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -6,7 +6,7 @@ export default function HeaderComp({ activeMenuIndex }) {
     localStorage.removeItem("JRMDistribution");
     localStorage.removeItem("JRMDistributionUser");
     localStorage.removeItem("JRMDistributionRoles");
-    window.location.href = "/";
+    window.location.reload();
   };
   let user = {};
   try {
@@ -32,6 +32,10 @@ export default function HeaderComp({ activeMenuIndex }) {
       label: "Warranty",
       path: "/warranties",
     },
+    {
+      label: "Users",
+      path: "/",
+    },
   ];
 
   const [menuItems, setMenuItems] = useState([]);
@@ -43,7 +47,7 @@ export default function HeaderComp({ activeMenuIndex }) {
     <header>
       <div class="container">
         <div class="logo">
-          <img src="assets/images/logo-wh.svg" alt="" />
+          <img class="header-logo" src="assets/images/logo-wh.svg" alt="" />
         </div>
         <div class="headermenu">
           <ul>
@@ -63,7 +67,7 @@ export default function HeaderComp({ activeMenuIndex }) {
         </div>
         {roles != "" && (
           <div class="headproperties">
-            <div class="search">
+            {/* <div class="search">
               <div class="search-container">
                 <input
                   class="search expandright"
@@ -79,10 +83,13 @@ export default function HeaderComp({ activeMenuIndex }) {
                   </span>
                 </label>
               </div>
-            </div>
-            <div class="notification">
+            </div> */}
+            <div class="notification_hdr">
               <a href="">
-                <i class="far fa-bell"></i>
+                <img
+                  class="img-icon"
+                  src="assets/images/icons/notification.svg"
+                />
               </a>
             </div>
             <div class="avatar">

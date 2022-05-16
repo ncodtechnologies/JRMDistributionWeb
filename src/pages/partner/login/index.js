@@ -5,6 +5,7 @@ import FieldError from "../../../components/FieldError";
 import { PartnerLoginSchema } from "../../../yupSchema/partnerLogin";
 import { PARTNER_URL } from "../../../urls/apiUrls";
 import { Link } from "react-router-dom";
+import { Oval } from "react-loader-spinner";
 
 function PartnerLogin() {
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
@@ -16,9 +17,11 @@ function PartnerLogin() {
   });
 
   const [invalidLogin, setInvalidLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const login = (values) => {
     setInvalidLogin(false);
+    setLoading(true);
     axios
       .post(PARTNER_URL.LOGIN, {
         email: values.email,
@@ -38,11 +41,14 @@ function PartnerLogin() {
             "JRMDistributionUser",
             JSON.stringify(response?.data?.result?.user)
           );
-          window.location.href = "/";
+          window.location.reload();
         } else setInvalidLogin(true);
+
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(false);
       });
   };
 
@@ -51,17 +57,20 @@ function PartnerLogin() {
       <div class="leftlogin">
         <div class="content">
           <img src="assets/images/nec.svg" alt="" />
-          <h5>UNIFIED COMMUNICATIONS SYSTEMS</h5>
-          <h6>PARTNERS IN SUCCESS</h6>
+          <h6>UNIFIED COMMUNICATIONS SYSTEMS</h6>
+          <h4>PARTNERS IN SUCCESS</h4>
         </div>
       </div>
       <div class="rightlogin">
         <div class="content">
           <img src="assets/images/logo.svg" alt="" />
-          <div class="back">
-            <a href="">
-              <i class="mdi mdi-arrow-bottom-left"></i>
-            </a>
+          <div class="">
+            <Link to={"/"}>
+              <img
+                src="assets/images/icons/back_icon.svg"
+                style={{ width: 20 }}
+              />
+            </Link>
           </div>
           <h3>LOGIN AS A PATNER</h3>
           <form onSubmit={handleSubmit}>
@@ -84,7 +93,13 @@ function PartnerLogin() {
               <FieldError error={errors.password} />
             </div>
             <button class="btn-primary" type="submit">
-              Login
+              {loading ? (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Oval color="#FFF" height={20} width={20} />
+                </div>
+              ) : (
+                "Login"
+              )}
             </button>
             {invalidLogin && <FieldError error={"Invalid Login"} />}
           </form>
@@ -96,7 +111,7 @@ function PartnerLogin() {
         </div>
         <div class="footcontent text-center">
           Don't have an account?{" "}
-          <Link to={"/regCustomer"} class="btn-forgotpass">
+          <Link to={"/regPartner"} class="btn-forgotpass">
             Register here
           </Link>
         </div>

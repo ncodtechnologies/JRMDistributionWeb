@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import FieldError from "../../../../components/FieldError";
 import * as Yup from "yup";
 import { CUSTOMER_URL } from "../../../../urls/apiUrls";
+import { useNavigate } from "react-router-dom";
 
 function CustomerForgotPasswordCodeSection({ email, next, setCode }) {
   const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
@@ -40,12 +41,20 @@ function CustomerForgotPasswordCodeSection({ email, next, setCode }) {
       });
   };
 
+  const navigate = useNavigate();
+
   return (
     <div class="content">
       <img src="assets/images/logo.svg" alt="" />
-      <div class="back">
-        <a href="">
-          <i class="mdi mdi-arrow-bottom-left"></i>
+      <div class="">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          <img src="assets/images/icons/back_icon.svg" style={{ width: 20 }} />
         </a>
       </div>
       <h3>ENTER CODE </h3>

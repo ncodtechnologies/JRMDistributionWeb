@@ -46,7 +46,6 @@ export default function RegAdditionalInfo({ data, onChangeData, errors }) {
                 >
                   {data?.company_additional}
                 </textarea>
-                <FieldError error={errors?.company_additional} />
               </div>
             </div>
             <div class="col-md-12">
@@ -60,7 +59,12 @@ export default function RegAdditionalInfo({ data, onChangeData, errors }) {
                     هل لديك مشاريع حالية؟ برجاء التوضيح<span>*</span>
                   </label>
                 </div>
-                <textarea name=""></textarea>
+                <textarea
+                  name=""
+                  onChange={(e) => onChangeData("opportunity", e.target.value)}
+                >
+                  {data?.opportunity}
+                </textarea>
               </div>
             </div>
           </div>

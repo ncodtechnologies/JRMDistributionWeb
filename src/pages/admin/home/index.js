@@ -14,10 +14,6 @@ export default function AdminHome() {
 
   const { user } = useSelector(userSelector);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [search, setSearch] = useState("");
@@ -54,6 +50,7 @@ export default function AdminHome() {
       )
       .then(function (response) {
         if (response?.data?.admin_id) {
+          resetForm();
           setShowSuccess(true);
           loadAdmins();
         }
@@ -67,17 +64,18 @@ export default function AdminHome() {
     loadAdmins();
   }, []);
 
-  const { getFieldProps, handleSubmit, errors, setFieldValue } = useFormik({
-    initialValues: {},
-    onSubmit(values) {
-      createAdmin(values);
-    },
-    validationSchema: AdminCreateSchema,
-  });
+  const { getFieldProps, handleSubmit, errors, setFieldValue, resetForm } =
+    useFormik({
+      initialValues: {},
+      onSubmit(values) {
+        createAdmin(values);
+      },
+      validationSchema: AdminCreateSchema,
+    });
 
   return (
     <>
-      <HeaderComp />
+      <HeaderComp activeMenuIndex={4} />
       <section class="content">
         <div class="container">
           <div class="breadcrumbs">
@@ -89,6 +87,8 @@ export default function AdminHome() {
               class="btn-border"
               onClick={(e) => {
                 e.preventDefault();
+                resetForm();
+                setFieldValue("admin_id", null);
                 setNewUserOpen(true);
                 window.openNewDeal();
               }}
@@ -105,9 +105,8 @@ export default function AdminHome() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button class="btn-filter">
-                <img src="assets/images/icons/filter.png" alt="" />
-              </button>
+              {/*               <button class="btn-filter">
+                <img src="assets/images/icons/filter.png" alt="" />   */}
             </div>
             <button class="btn-primary">Search</button>
           </div>
@@ -118,6 +117,7 @@ export default function AdminHome() {
                   <td>Name</td>
                   <td>Email</td>
                   <td>User Type</td>
+                  <td></td>
                 </tr>
               </thead>
               <tbody>
@@ -131,10 +131,27 @@ export default function AdminHome() {
                       row?.type?.toLowerCase().includes(search.toLowerCase())
                   )
                   .map((row) => (
-                    <tr class="names">
+                    <tr class="names" style={{ cursor: "pointer" }}>
                       <td>{row.name}</td>
                       <td>{row.email}</td>
                       <td>{row.type}</td>
+                      <td align="right">
+                        <a
+                          href="#"
+                          class="btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setNewUserOpen(true);
+                            window.openNewDeal();
+                            setFieldValue("admin_id", row.admin_id);
+                            setFieldValue("name", row.name);
+                            setFieldValue("email", row.email);
+                            setFieldValue("type", row.type);
+                          }}
+                        >
+                          <i class="fas fa-edit"></i>
+                        </a>
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -142,67 +159,23 @@ export default function AdminHome() {
           </div>
         </div>
       </section>
-      <footer>
-        <div class="container">
-          <div class="dtls">
-            <img src="assets/images/logo-wh.svg" alt="" />
-            <p>
-              Our Technological stack allows for your business to be future
-              ready
-            </p>
-            <ul>
-              <li>
-                <a href="">
-                  <i class="fab fa-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <i class="fab fa-whatsapp"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="subscribe">
-            <strong>Stay up to date with the latest news!</strong>
-            <form action="">
-              <input type="text" placeholder="Enter Your Email" />
-              <input type="submit" value="subscribe" />
-            </form>
-          </div>
-          <div class="footnav">
-            <ul>
-              <li>
-                <a href="">Home</a>
-                <a href="">Mobility</a>
-                <a href="">Resources</a>
-              </li>
-              <li>
-                <a href="">SL2100 Communications System</a>
-                <a href="">Phones</a>
-                <a href="">Contact us</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="container">
-          <p class="copyright">Copyrights JRM for Communications 2021</p>
-        </div>
-      </footer>
+
       {newUserOpen && (
         <section id="newdealwrap">
           <div class="newdealform">
-            <a href="javascript:void(0)" class="close">
+            <a
+              href="#"
+              onClick={() => {
+                resetForm();
+                window.closeSlide();
+              }}
+              class="close"
+            >
               <i class="fas fa-times"></i>
             </a>
             {!showSuccess ? (
               <div class="dealnew">
-                <h3>NEW USER</h3>
+                <h3>NEW ADMIN USER</h3>
                 <form onSubmit={handleSubmit}>
                   <div class="forminput">
                     <div class="labeldiv">
@@ -261,7 +234,13 @@ export default function AdminHome() {
                     <FieldError error={errors.type} />
                   </div>
 
-                  <div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 20,
+                      width: "90%",
+                    }}
+                  >
                     <input
                       type="submit"
                       class="btn-primary"
@@ -272,13 +251,15 @@ export default function AdminHome() {
                 </form>
               </div>
             ) : (
-              <div class="dealsuccess">
-                <div class="dtls">
-                  <img src="assets/images/icons/checked.png" alt="" />
-                  <p>User Created Successfully</p>
-                  <button onClick={(e) => window.closeSlide()}>Done</button>
+              <>
+                <div class="dealsuccess">
+                  <div class="dtls">
+                    <img src="assets/images/icons/checked.png" alt="" />
+                    <p>User Created Successfully</p>
+                    <button onClick={(e) => window.closeSlide()}>Done</button>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </section>

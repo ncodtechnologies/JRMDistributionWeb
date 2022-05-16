@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import PartnerLogin from "../pages/partner/login";
 import CustomerLogin from "../pages/customer/login";
@@ -17,6 +17,8 @@ import PartnersList from "../pages/admin/partners";
 import PartnerDt from "../pages/admin/partners/partnerDt";
 import AdminWarranties from "../pages/admin/warranty";
 import AdminCustomer from "../pages/admin/customers";
+import Home from "../pages";
+import WarrantyDt from "../pages/admin/warranty/warrantyDt";
 
 export default function AppRoutes() {
   const session = localStorage.getItem("JRMDistribution") || "";
@@ -25,7 +27,7 @@ export default function AppRoutes() {
   if (session == "") {
     return (
       <Routes>
-        <Route path="/" element={<CustomerLogin />} />
+        <Route path="/" element={<Home />} />
         <Route path="/customer" element={<CustomerLogin />} />
         <Route
           path="/customer_forgot_password"
@@ -39,6 +41,7 @@ export default function AppRoutes() {
         />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/regPartner" element={<RegisterPartner />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     );
   } else if (roles.includes("PARTNER")) {
@@ -46,6 +49,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<Deals />} />
         <Route path="/deals" element={<Deals />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     );
   } else if (roles.includes("CUSTOMER")) {
@@ -53,6 +57,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<WarrantyList />} />
         <Route path="/warranty" element={<WarrantyList />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     );
   } else if (roles.includes("ADMIN")) {
@@ -60,13 +65,18 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<AdminHome />} />
         <Route path="/home" element={<AdminHome />} />
+        <Route path="/deals/:status" element={<AdminDeals />} />
         <Route path="/deals" element={<AdminDeals />} />
         <Route path="/dealDt" element={<DealDt />} />
         <Route path="/partners" element={<PartnersList />} />
+        <Route path="/partners/:status" element={<PartnersList />} />
         <Route path="/partnerDt" element={<PartnerDt />} />
+        <Route path="/warranties/:status" element={<AdminWarranties />} />
         <Route path="/warranties" element={<AdminWarranties />} />
+        <Route path="/warrantyDt" element={<WarrantyDt />} />
         <Route path="/customers" element={<AdminCustomer />} />
         <Route path="/regPartner" element={<RegisterPartner />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     );
   }

@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/controllers/";
+const BASE_URL = "https://jrm.com.eg/distribution/php/controllers/";
 
 export const PARTNER_URL = {
   LOGIN: BASE_URL + "partner/login.php",
@@ -23,9 +23,11 @@ export const ADMIN_URL = {
   APPROVE_PARTNER: BASE_URL + "partner/approve.php",
   REJECT_PARTNER: BASE_URL + "partner/reject.php",
   GET_WARRANTY: BASE_URL + "warranty/getWarranties.php",
+  GET_WARRANTY_DT: BASE_URL + "warranty/getWarrantyDt.php",
   GET_WARRANTY_COUNT: BASE_URL + "warranty/getCount.php",
   APPROVE_WARRANTY: BASE_URL + "warranty/approve.php",
-  REJECT_WARRANTY: BASE_URL + "warranty/reject.php",
+  ACTIVATE_WARRANTY: BASE_URL + "warranty/activateWarranty.php",
+  REJECT_WARRANTY: BASE_URL + "warranty/rejectWarranty.php",
   GET_CUSTOMERS: BASE_URL + "customer/getCustomers.php",
   APPROVE_CUSTOMER: BASE_URL + "customer/approve.php",
   REJECT_CUSTOMER: BASE_URL + "customer/reject.php",

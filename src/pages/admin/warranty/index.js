@@ -9,7 +9,7 @@ import { ADMIN_URL, PARTNER_URL } from "../../../urls/apiUrls";
 import { NewDealSchema } from "../../../yupSchema/newDeal";
 import useDropdownMenu from "react-accessible-dropdown-menu-hook";
 import { Dropdown } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 
 export default function AdminWarranties() {
@@ -34,13 +34,6 @@ export default function AdminWarranties() {
   const token = localStorage.getItem("JRMDistribution");
 
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const products = [
-    { product_id: 1, name: "Product 1", capacity: 10 },
-    { product_id: 2, name: "Product 2", capacity: 20 },
-    { product_id: 3, name: "Product 3", capacity: 30 },
-    { product_id: 4, name: "Product 4", capacity: 40 },
-    { product_id: 5, name: "Product 5", capacity: 50 },
-  ];
 
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
@@ -222,14 +215,31 @@ export default function AdminWarranties() {
       });
   };
 
+  const { status } = useParams();
+
   useEffect(() => {
-    loadWarranties(selectedStatus);
+    setSelectedStatus(status);
+    loadWarranties(status);
     loadCount();
-  }, [selectedStatus]);
+    if (!status) {
+      setSelectedStatus("PENDING");
+      loadWarranties("PENDING");
+      loadCount();
+    }
+  }, [status]);
+
+  const page = "warranties";
+
+  // useEffect(() => {
+  //   loadWarranties(selectedStatus);
+  //   loadCount();
+  // }, [selectedStatus]);
 
   const [newCount, setNewCount] = useState(0);
   const [activeCount, setActiveCount] = useState(0);
   const [rejectCount, setRejectCount] = useState(0);
+  const [deactiveCount, setDeactiveCount] = useState(0);
+  const [expiredCount, setExpiredCount] = useState(0);
 
   useEffect(() => {
     setNewCount(
@@ -241,13 +251,25 @@ export default function AdminWarranties() {
     setActiveCount(
       count.length > 0 &&
         count.reduce((a, b) => {
-          return a + (b.status == "APPROVED" ? parseInt(b.count) || 0 : 0);
+          return a + (b.status == "ACTIVE" ? parseInt(b.count) || 0 : 0);
         }, 0)
     );
     setRejectCount(
       count.length > 0 &&
         count.reduce((a, b) => {
           return a + (b.status == "REJECTED" ? parseInt(b.count) || 0 : 0);
+        }, 0)
+    );
+    setDeactiveCount(
+      count.length > 0 &&
+        count.reduce((a, b) => {
+          return a + (b.status == "DEACTIVATED" ? parseInt(b.count) || 0 : 0);
+        }, 0)
+    );
+    setExpiredCount(
+      count.length > 0 &&
+        count.reduce((a, b) => {
+          return a + (b.status == "EXPIRED" ? parseInt(b.count) || 0 : 0);
         }, 0)
     );
   }, [count]);
@@ -262,55 +284,31 @@ export default function AdminWarranties() {
               {selectedStatus == "PENDING" ? (
                 <span>New ({newCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("PENDING");
-                  }}
-                >
-                  New(
-                  {newCount})
-                </a>
+                <Link to={`/${page}/PENDING`}>New ({newCount})</Link>
               )}
-              {selectedStatus == "APPROVED" ? (
-                <span>Active({activeCount})</span>
+              {selectedStatus == "ACTIVE" ? (
+                <span>Active ({activeCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("APPROVED");
-                  }}
-                >
-                  Approved({activeCount})
-                </a>
+                <Link to={`/${page}/ACTIVE`}>Active ({activeCount})</Link>
               )}
               {selectedStatus == "REJECTED" ? (
-                <span>Rejected({rejectCount})</span>
+                <span>Rejected ({rejectCount})</span>
               ) : (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedStatus("REJECTED");
-                  }}
-                >
-                  Rejected({rejectCount})
-                </a>
+                <Link to={`/${page}/REJECTED`}>Rejected ({rejectCount})</Link>
+              )}
+              {selectedStatus == "DEACTIVATED" ? (
+                <span>Deactivated ({deactiveCount})</span>
+              ) : (
+                <Link to={`/${page}/DEACTIVATED`}>
+                  Deactivated ({deactiveCount})
+                </Link>
+              )}
+              {selectedStatus == "EXPIRED" ? (
+                <span>Expired ({expiredCount})</span>
+              ) : (
+                <Link to={`/${page}/EXPIRED`}>Expired ({expiredCount})</Link>
               )}
             </div>
-            <button
-              class="btn-border"
-              onClick={(e) => {
-                e.preventDefault();
-                setNewDealOpen(true);
-                window.openNewDeal();
-              }}
-              id="newdeal"
-            >
-              <i class="fas fa-plus"></i>New Deal
-            </button>
           </div>
           <div class="searchwrap">
             <div class="searchblk">
@@ -320,9 +318,8 @@ export default function AdminWarranties() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button class="btn-filter">
-                <img src="assets/images/icons/filter.png" alt="" />
-              </button>
+              {/*               <button class="btn-filter">
+                <img src="assets/images/icons/filter.png" alt="" />   */}
             </div>
             <button class="btn-primary">Search</button>
           </div>
@@ -330,12 +327,21 @@ export default function AdminWarranties() {
             <table class="fold-table" style={{ borderCollapse: "collapse" }}>
               <thead>
                 <tr class="names">
-                  <td>Deal No</td>
+                  {selectedStatus != "PENDING" && (
+                    <td>
+                      {selectedStatus == "REJECTED"
+                        ? "Rejection"
+                        : selectedStatus == "DEACTIVATED"
+                        ? "Deactivation"
+                        : "Activation"}{" "}
+                      No
+                    </td>
+                  )}
+                  <td>Warranty No</td>
                   <td>Customer</td>
                   <td>Sold By</td>
-                  <td>No of Products</td>
+                  {selectedStatus == "PENDING" && <td>No of Products</td>}
                   <td>Purchase Date</td>
-                  <td></td>
                 </tr>
               </thead>
               <tbody>
@@ -348,44 +354,38 @@ export default function AdminWarranties() {
                       row?.sold_by?.toLowerCase().includes(search.toLowerCase())
                   )
                   .map((row) => (
-                    <tr class="names">
-                      <td># {row.warranty_id}</td>
+                    <tr
+                      class="names"
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => {
+                        navigate("/warrantyDt", {
+                          state: {
+                            warranty_id: row.warranty_id,
+                            status_id:
+                              row.rejection_no || row.activation_no || 0,
+                            status: selectedStatus,
+                          },
+                        });
+                      }}
+                    >
+                      {selectedStatus != "PENDING" && (
+                        <td>
+                          #{" "}
+                          {selectedStatus == "REJECTED" ||
+                          selectedStatus == "DEACTIVATED"
+                            ? row.rejection_no
+                            : row.activation_no}
+                        </td>
+                      )}
+                      <td style={{ height: 40 }}>{row.warranty_id}</td>
                       <td>{row.customer}</td>
                       <td>{row.sold_by}</td>
-                      <td>{row.product_count}</td>
+                      {selectedStatus == "PENDING" && (
+                        <td>{row.product_count}</td>
+                      )}
                       <td>
                         {row.purchase_date &&
                           moment(row.purchase_date).format("DD/MM/YYYY")}{" "}
-                      </td>
-                      <td>
-                        <Dropdown>
-                          <Dropdown.Toggle
-                            variant="transparent"
-                            id="dropdown-basic"
-                            style={{ color: "#aaa" }}
-                          >
-                            <i class="fas fa-ellipsis-h"></i>
-                          </Dropdown.Toggle>
-
-                          <Dropdown.Menu>
-                            <Dropdown.Item
-                              href="#"
-                              onClick={(e) => {
-                                activateWarranty(row.warranty_id);
-                              }}
-                            >
-                              Activate
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                              href="#"
-                              onClick={(e) => {
-                                rejectWarranty(row.warranty_id);
-                              }}
-                            >
-                              Reject
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
                       </td>
                     </tr>
                   ))}
@@ -394,219 +394,6 @@ export default function AdminWarranties() {
           </div>
         </div>
       </section>
-      {newDealOpen && (
-        <section id="newdealwrap">
-          <div class="newdealform">
-            <a href="javascript:void(0)" class="close">
-              <i class="fas fa-times"></i>
-            </a>
-            {!showSuccess ? (
-              <div class="dealnew">
-                <form onSubmit={handleSubmit}>
-                  <h3>NEW DEAL REGISTERATION</h3>
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
-                        Company Name<span>*</span>{" "}
-                      </label>
-                      <label class="ar">
-                        اسم الشركة<span>*</span>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Company Name"
-                      {...getFieldProps("company_name")}
-                    />
-                    <FieldError error={errors.company_name} />
-                  </div>
-
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
-                        Contact Person<span>*</span>
-                      </label>
-                      <label class="ar">
-                        اسم الشخص<span>*</span>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Contact Person"
-                      {...getFieldProps("contact_person")}
-                    />
-                    <FieldError error={errors.contact_person} />
-                  </div>
-
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
-                        Email<span>*</span>
-                      </label>
-                      <label class="ar">
-                        البريد الالكتروني<span>*</span>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Email"
-                      {...getFieldProps("email")}
-                    />
-                    <FieldError error={errors.email} />
-                  </div>
-
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
-                        Mobile No.<span>*</span>
-                      </label>
-                      <label class="ar">
-                        رقم الموبيل<span>*</span>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Mobile No"
-                      {...getFieldProps("mobile_no")}
-                    />
-                    <FieldError error={errors.mobile_no} />
-                  </div>
-
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
-                        Expected Revenue<span>*</span>
-                      </label>
-                      <label class="ar">
-                        العائد المالي المتوقع<span>*</span>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="revenue"
-                      {...getFieldProps("revenue")}
-                    />
-                    <FieldError error={errors.revenue} />
-                  </div>
-
-                  <div class="forminput">
-                    <div class="labeldiv">
-                      <label>
-                        Products<span>*</span>
-                      </label>
-                      <label class="ar pad55">
-                        المنتجات<span>*</span>
-                      </label>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <select
-                          onChange={(e) => onProdChange(e)}
-                          value={productId}
-                        >
-                          <option value={null}>Select Product</option>
-                          {products?.map((el) => (
-                            <option value={el.product_id}>{el.name}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div class="col-md-3">
-                        <input
-                          type="text"
-                          value={capacity}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            setCapacity(e.target.value);
-                          }}
-                          placeholder="Capacity"
-                        />
-                      </div>
-                      <div class="col-md-2">
-                        <input
-                          type="text"
-                          value={qty}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            setQty(e.target.value);
-                          }}
-                          placeholder="Qty"
-                        />
-                      </div>
-                      <div class="col-md-1">
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            addProduct();
-                          }}
-                          class="arrow"
-                        >
-                          <i class="fas fa-plus"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  {selectedProducts?.map((el, index) => {
-                    return (
-                      <div class="row product-selected">
-                        <div class="col-md-6">
-                          <span>{el.name}</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span>{el.capacity}</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span>{el.qty}</span>
-                        </div>
-                        <div class="col-md-1">
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              remSelProduct(index);
-                            }}
-                            style={{ color: "red" }}
-                          >
-                            <i class="fas fa-times"></i>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                  <div>
-                    <input
-                      type="submit"
-                      class="btn-primary"
-                      // onClick={() => setShowSuccess(true)}
-                      value="SUBMIT"
-                    />
-                  </div>
-                </form>
-              </div>
-            ) : (
-              <div class="dealsuccess">
-                <div class="dtls">
-                  <img src="assets/images/icons/checked.png" alt="" />
-                  <p>
-                    Your deal has been submitted successfully <br />
-                    Our team will contact you shortly
-                  </p>
-                  <button
-                    onClick={(e) => {
-                      window.closeSlide();
-                      setNewDealOpen(false);
-                      setShowSuccess(false);
-                    }}
-                  >
-                    Done
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
     </>
   );
 }

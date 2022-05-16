@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import { NotificationManager } from "react-notifications";
+import { useNavigate } from "react-router-dom";
 import FieldError from "../../../components/FieldError";
 import { CUSTOMER_URL } from "../../../urls/apiUrls";
 import { CustomerCreateSchema } from "../../../yupSchema/customerCreate";
@@ -13,13 +15,16 @@ function CustomerRegister() {
     validationSchema: CustomerCreateSchema,
   });
 
+  const navigate = useNavigate();
+
   const register = (values) => {
     axios
       .post(CUSTOMER_URL.REGISTER, {
         ...values,
       })
       .then(function (response) {
-        window.location.href = "/customer";
+        NotificationManager.success("Customer registration successfull");
+        navigate("/customer");
       })
       .catch(function (error) {
         console.log(error);
@@ -36,11 +41,20 @@ function CustomerRegister() {
         </div>
       </div>
       <div class="rightlogin" style={{ overflowX: "scroll" }}>
-        <div class="content" style={{ paddingTop: 50 }}>
+        <div class="content" style={{ paddingTop: 50, height: "100%" }}>
           <img src="assets/images/logo.svg" alt="" />
-          <div class="back">
-            <a href="">
-              <i class="mdi mdi-arrow-bottom-left"></i>
+          <div class="">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
+            >
+              <img
+                src="assets/images/icons/back_icon.svg"
+                style={{ width: 20 }}
+              />
             </a>
           </div>
           <h3>REGISTER AS A CUSTOMER</h3>
@@ -95,11 +109,15 @@ function CustomerRegister() {
               <input
                 type="password"
                 placeholder="Password"
-                {...getFieldProps("confim_password")}
+                {...getFieldProps("confirmPassword")}
               />
-              <FieldError error={errors.confim_password} />
+              <FieldError error={errors.confirmPassword} />
             </div>
-            <button class="btn-primary" type="submit">
+            <button
+              style={{ marginBottom: 30 }}
+              class="btn-primary"
+              type="submit"
+            >
               REGISTER
             </button>
           </form>

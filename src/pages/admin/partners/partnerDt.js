@@ -8,6 +8,7 @@ import { ADMIN_URL } from "../../../urls/apiUrls";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import axios from "axios";
+import FieldError from "../../../components/FieldError";
 
 export default function ParnerDt() {
   useScript("assets/js/custom/partner_company.js");
@@ -22,9 +23,9 @@ export default function ParnerDt() {
 
   const navigate = useNavigate();
 
-  const [rejectionReason, setRejectionReason] = useState();
-  const [partnershipLevel, setPartnershipLevel] = useState();
-  const [salesTarget, setSalesTarget] = useState();
+  const [rejectionReason, setRejectionReason] = useState("");
+  const [partnershipLevel, setPartnershipLevel] = useState("");
+  const [salesTarget, setSalesTarget] = useState("");
 
   const approvePartner = () => {
     axios
@@ -71,9 +72,22 @@ export default function ParnerDt() {
       <section class="content">
         <div class="container">
           <div class="breadcrumbs">
-            <a href="">Dashboard</a>
-            <span>Deal Registeration</span>
+            <div class="">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(-1);
+                }}
+              >
+                <img
+                  src="assets/images/icons/back_icon.svg"
+                  style={{ width: 20 }}
+                />
+              </a>
+            </div>
           </div>
+
           <div class="title">
             <h3>{partner?.company_name}</h3>
           </div>
@@ -91,7 +105,6 @@ export default function ParnerDt() {
               <div class="row fold">
                 <table>
                   <tr>
-                    <td></td>
                     <td>
                       <span>Full Name</span>
                       <p>{partner?.full_name}</p>
@@ -127,22 +140,306 @@ export default function ParnerDt() {
               <div class="row fold">
                 <table>
                   <tr>
-                    <td></td>
                     <td>
-                      <span>Full Name</span>
-                      <p>{partner?.full_name}</p>
+                      <span>Company Legal Name</span>
+                      <p>{partner?.company_name}</p>
                     </td>
                     <td>
-                      <span>Role / Title</span>
-                      <p>{partner?.role}</p>
+                      <span>Headoffice Location</span>
+                      <p>{partner?.company_location}</p>
                     </td>
                     <td>
                       <span>Phone</span>
-                      <p>{partner?.phone}</p>
+                      <p>{partner?.company_phone}</p>
+                    </td>
+                    <td>
+                      <span>Fax</span>
+                      <p>{partner?.company_fax}</p>
+                    </td>
+                    <td>
+                      <span>Website</span>
+                      <p>{partner?.company_website}</p>
+                    </td>
+                    <td>
+                      <span>Years in Business</span>
+                      <p>{partner?.company_years}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;BIILING ADDRESS
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <span>Address</span>
+                      <p>{partner?.billing_address}</p>
+                    </td>
+                    <td>
+                      <span>City</span>
+                      <p>{partner?.billing_city}</p>
+                    </td>
+                    <td>
+                      <span>Region</span>
+                      <p>{partner?.billing_region}</p>
+                    </td>
+                    <td>
+                      <span>Zip / Postal code</span>
+                      <p>{partner?.billing_postalcode}</p>
+                    </td>
+                    <td>
+                      <span>Country</span>
+                      <p>{partner?.billing_country}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;SHIPPING ADDRESSS
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <span>Address</span>
+                      <p>{partner?.shipping_address}</p>
+                    </td>
+                    <td>
+                      <span>City</span>
+                      <p>{partner?.shipping_city}</p>
+                    </td>
+                    <td>
+                      <span>Region</span>
+                      <p>{partner?.shipping_region}</p>
+                    </td>
+                    <td>
+                      <span>Zip / Postal code</span>
+                      <p>{partner?.shipping_postalcode}</p>
+                    </td>
+                    <td>
+                      <span>Country</span>
+                      <p>{partner?.shipping_country}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;COMPANY DOCUMENTS
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <p>{partner?.commercial_document}</p>
+                    </td>
+                    <td>
+                      <p>{partner?.taxation_document}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;EXECUTIVE
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <span>Full Name</span>
+                      <p>{partner?.executive_first_name}</p>
+                    </td>
+                    <td>
+                      <span>Role / Title</span>
+                      <p>{partner?.executive_role}</p>
+                    </td>
+                    <td>
+                      <span>Phone</span>
+                      <p>{partner?.executive_phone}</p>
                     </td>
                     <td>
                       <span>Email</span>
-                      <p>{partner?.email}</p>
+                      <p>{partner?.executive_email}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;VENDOR MANAGEMENT
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <span>Full Name</span>
+                      <p>{partner?.vendor_first_name}</p>
+                    </td>
+                    <td>
+                      <span>Role / Title</span>
+                      <p>{partner?.vendor_role}</p>
+                    </td>
+                    <td>
+                      <span>Phone</span>
+                      <p>{partner?.vendor_phone}</p>
+                    </td>
+                    <td>
+                      <span>Email</span>
+                      <p>{partner?.vendor_email}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;PLEASE PROVIDE A GENERAL DESCRIPTION OF YOUR COMPANY
+                    AND OFFERINGS:
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <p>{partner?.company_general}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;ADDITIONAL INFORMATION: PLEASE PROVIDE ANY INFORMATION
+                    RELEVANT TO THIS APPLICATION
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <p>{partner?.company_additional}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;APPROXIMATE CUSTOMER BREAKDOWN BY PERCENTAGE (TOTAL
+                    SHOULD EQUAL 100%):
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <span>Small/Medium Business</span>
+                      <p>{partner?.business}</p>
+                    </td>
+                    <td>
+                      <span>Enterprise</span>
+                      <p>{partner?.enterprise}</p>
+                    </td>
+                    <td>
+                      <span>Federal Government</span>
+                      <p>{partner?.federal_government}</p>
+                    </td>
+                    <td>
+                      <span>Others</span>
+                      <p>{partner?.business_others}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="formwrap">
+            <div class="fwrap">
+              <div class="row">
+                <div class="ftitle col-md-12">
+                  <h6>
+                    <i class="fas fa-caret-right"></i>
+                    &nbsp;DO YOU HAVE A CURRENT OPPORTUNITY? PLEASE DESCRIBE.
+                  </h6>
+                </div>
+              </div>
+              <div class="row fold">
+                <table>
+                  <tr>
+                    <td>
+                      <p>{partner?.opportunity}</p>
                     </td>
                   </tr>
                 </table>
@@ -188,7 +485,11 @@ export default function ParnerDt() {
             style={{ width: "100%" }}
           >
             <img
-              src="assets/images/icons/checked.png"
+              src={
+                showApproval
+                  ? "assets/images/icons/approve.svg"
+                  : "assets/images/icons/reject.svg"
+              }
               alt=""
               style={{ width: 30, margin: 10 }}
             />
@@ -229,7 +530,9 @@ export default function ParnerDt() {
                   <option value="Silver">Silver</option>
                   <option value="Platinum">Platinum</option>
                 </select>
+                <FieldError error={partnershipLevel == "" && "Required"} />
               </div>
+
               <div class="forminput" style={{ width: "100%" }}>
                 <div class="labeldiv">
                   <label>Sales Target</label>
@@ -242,6 +545,7 @@ export default function ParnerDt() {
                   value={salesTarget}
                   type="text"
                 />
+                <FieldError error={salesTarget == "" && "Required"} />
               </div>
             </div>
           )}
@@ -262,8 +566,10 @@ export default function ParnerDt() {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                if (showApproval) approvePartner();
-                else rejectPartner();
+                if (salesTarget != "" && partnershipLevel != "") {
+                  if (showApproval) approvePartner();
+                  else rejectPartner();
+                }
               }}
               class="btn-primary"
             >
@@ -274,20 +580,24 @@ export default function ParnerDt() {
       </Modal>
     </>
   ) : (
-    <div class="dealsuccess">
-      <div class="dtls">
-        <img src="assets/images/icons/checked.png" alt="" />
-        <p>
-          <b>THE DEAL HAS BEEN APPROVED</b>
-        </p>
-        <button
-          onClick={(e) => {
-            setShowSuccess(false);
-          }}
-        >
-          Done
-        </button>
+    <>
+      <HeaderComp activeMenuIndex={0} />
+      <div class="dealsuccess">
+        <div class="dtls">
+          <img src="assets/images/icons/checked.png" alt="" />
+          <p>
+            <b>THE DEAL HAS BEEN APPROVED</b>
+          </p>
+          <button
+            onClick={(e) => {
+              setShowSuccess(false);
+              navigate(-1);
+            }}
+          >
+            Done
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

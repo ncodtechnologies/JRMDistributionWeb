@@ -1,10 +1,3 @@
-/* ------------------------------------------------------------------------------
-Project Name : JRM Communication
-Description  : Main Style Sheet
-Author       : Imran Rovan
-Created On   : 18 December 2021
----------------------------------------------------------------------------------*/
-
 html,
 body {
   margin: 0;
@@ -100,7 +93,7 @@ input::-webkit-inner-spin-button {
 a,
 a:hover,
 a:focus {
-  color: #29bbce;
+  /* color: #29bbce; */
   text-decoration: none;
   -moz-transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
@@ -148,7 +141,7 @@ div {
   -webkit-font-smoothing: antialiased;
 }
 p {
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1.5;
   color: #9a9a9c;
   margin-bottom: 10px;
@@ -180,8 +173,7 @@ body {
   background-color: #fff;
   font-family: "Biotif";
   font-weight: 400;
-  font-size: 16px;
-  line-height: ;
+  font-size: 12px;
   margin: 0px;
   padding: 0;
 }
@@ -198,11 +190,21 @@ body.inactive {
   height: 100vh;
   display: flex;
 }
+#login .leftlogin-customer {
+  position: relative;
+  width: 50%;
+  height: 100vh;
+  background: #fff url(../images/customer_bg.svg) no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #login .leftlogin {
   position: relative;
   width: 50%;
   height: 100vh;
-  background: #fff url(../images/bg_login.jpg) no-repeat center center;
+  background: #fff url(../images/partner_bg.svg) no-repeat center center;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -239,7 +241,7 @@ body.inactive {
   margin-bottom: 45px;
 }
 #login .leftlogin .content h5 {
-  font-size: 1.7vw;
+  font-size: 1.6vw;
   font-weight: 500;
   letter-spacing: 0px;
   color: #ffffff;
@@ -247,10 +249,17 @@ body.inactive {
   margin-bottom: 15px;
 }
 #login .leftlogin .content h6 {
-  font-size: 1.9vw;
-  font-weight: 700;
+  font-size: 1.3vw;
+  font-weight: 400;
+  color: #fff;
+  text-transform: uppercase;
+}
+#login .leftlogin .content h4 {
+  font-size: 1.8vw;
+  font-weight: 400;
   color: #ffd400;
   text-transform: uppercase;
+  margin-top: 10px;
 }
 #login .rightlogin .content {
   width: 440px;
@@ -259,13 +268,14 @@ body.inactive {
   margin-bottom: 30px;
 }
 .back a {
-  font-size: 24px;
+  font-size: 22px;
   color: #005baa;
   transform: rotate(45deg);
   display: inline-block;
 }
 #login .rightlogin .content h3 {
-  font-size: 1.45vw;
+  font-size: 1.35vw;
+  font-weight: 400;
   color: #04458c;
   margin-bottom: 20px;
   margin-top: 30px;
@@ -274,7 +284,6 @@ body.inactive {
   margin-bottom: 20px;
 }
 .forminput label {
-  font-size: 16px;
   color: #36485c;
   text-transform: uppercase;
   display: block;
@@ -288,7 +297,7 @@ body.inactive {
   border-radius: 10px;
   display: block;
   width: 100%;
-  height: 50px;
+  height: 35px;
   padding: 0 12px;
   outline: 0;
 }
@@ -305,14 +314,13 @@ body.inactive {
 }
 .btn-primary {
   width: 100%;
-  height: 50px;
+  height: 35px;
   background: #005baa;
   border-radius: 3px;
 }
 .btn-forgotpass {
   text-align: center;
   font-family: "Helvetica LT Std";
-  font-size: 16px;
   line-height: 17px;
   color: #005baa;
   margin-bottom: 10px;
@@ -330,14 +338,13 @@ body.inactive {
   font-family: "Helvetica LT Std";
 }
 .footcontent a {
-  font-size: 16px;
   line-height: 17px;
   color: #005baa;
   display: inline-block;
   border-bottom: 1px solid #005baa;
 }
 header {
-  height: 130px;
+  height: 100px;
   background: #04458c;
   width: 100%;
 }
@@ -352,7 +359,6 @@ header .container {
   display: flex;
 }
 .breadcrumbs a {
-  font-size: 16px;
   color: #36485c;
   margin-right: 100px;
 }
@@ -360,7 +366,6 @@ header .container {
   margin-left: 100px;
 }
 .breadcrumbs span {
-  font-size: 16px;
   color: #005baa;
   position: relative;
   margin-right: 100px;
@@ -382,7 +387,7 @@ header .container {
   margin-bottom: 20px;
 }
 .title h3 {
-  font-size: 24px;
+  font-size: 20px;
   color: #005baa;
   text-transform: uppercase;
   font-weight: 500;
@@ -392,7 +397,7 @@ header .container {
   color: #004a9c;
   padding: 8px 20px;
   border: 2px solid #004a9c;
-  border-radius: 5px;
+  border-radius: 3px;
   text-transform: uppercase;
   text-align: center;
   font-weight: 500;
@@ -414,7 +419,7 @@ header .container {
   display: flex;
   align-items: top;
   margin: 0;
-  height: 50px;
+  height: 35px;
   width: 50px;
 }
 
@@ -422,13 +427,15 @@ header .container {
   display: inline-block;
   pointer-events: none;
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .searchbutton {
   position: absolute;
-  font-size: 22px;
+  font-size: 20px;
   width: 35px;
+  height: 35px;
+  line-height: 35px;
   text-align: center;
   text-transform: capitalize;
   margin: 0;
@@ -477,7 +484,7 @@ header .container {
   padding: 0 0 0 16px;
 }
 .notification {
-  font-size: 22px;
+  font-size: 20px;
   padding-left: 60px;
 }
 .notification a {
@@ -500,13 +507,12 @@ header .container {
   margin-right: 12px;
 }
 .avatar .dtls span {
-  font-size: 16px;
   color: #fff;
   margin-right: 8px;
   display: inline-block;
 }
 .avatar .dtls i {
-  font-size: 13px;
+  font-size: 11px;
   color: #ffd400;
 }
 
@@ -519,7 +525,7 @@ header .avatar .dropdown-menu {
   border-radius: 8px;
 }
 header .avatar .dropdown-menu a {
-  font-size: 14px;
+  font-size: 12px;
   letter-spacing: 0.2px;
   color: #222222;
   margin-bottom: 15px;
@@ -564,8 +570,8 @@ header .avatar .dropdown-menu a.active span:after {
   width: 100%;
   background: #f5f6f7;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  height: 50px;
-  border-radius: 5px;
+  height: 35px;
+  border-radius: 3px;
   padding: 0 60px 0 15px;
 }
 
@@ -582,7 +588,7 @@ header .avatar .dropdown-menu a.active span:after {
   height: 35px;
 }
 .content {
-  padding-bottom: 50px;
+  padding-bottom: 35px;
 }
 table {
   position: relative;
@@ -624,7 +630,7 @@ table.fold-table > tbody > tr.view td:first-child:before {
   width: 9px;
   height: 16px;
   margin-top: -8px;
-  font-size: 13px;
+  font-size: 11px;
   content: "\f0d7";
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
@@ -729,15 +735,16 @@ table.fold-table > tbody > tr.fold.open {
 }
 table.fold-table > tbody > tr.view td span,
 table.fold-table > tbody > tr.fold td span {
-  font-size: 14px;
+  font-size: 12px;
   color: rgba(0, 91, 170, 1);
 }
 table.fold-table > tbody > tr.view td p,
 table.fold-table > tbody > tr.fold td p {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   color: rgba(54, 72, 92, 1);
   margin: 0;
+  height: 18px;
 }
 table.fold-table > tbody > tr.view td:first-child {
   border-radius: 5px 0 0 5px;
@@ -746,7 +753,7 @@ table.fold-table > tbody > tr.view td:last-child {
   border-radius: 0 5px 5px 0;
 }
 .status {
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
 }
@@ -767,28 +774,16 @@ table.fold-table > tbody > tr.view td:last-child {
 .status.rejected::before {
   background: rgba(255, 0, 0, 1);
 }
-.status.gold::before {
-  background: #f8e70c;
-}
-.status.silver::before {
-  background: #8195ab;
-}
-.status.platinum::before {
-  background: #cb3025;
-}
-.status.authorized::before {
-  background: #04458c;
-}
 table.fold-table > tbody > tr.fold table tr td {
   border-bottom: 1px solid #eee;
 }
 table.fold-table tr.view .info {
   position: absolute;
-  bottom: 50px;
+  bottom: 35px;
   width: 250px;
   left: 0;
   z-index: 9;
-  font-size: 14px;
+  font-size: 12px;
   background: #36485c;
   border-radius: 5px;
   padding: 10px;
@@ -840,7 +835,6 @@ footer .dtls img {
   margin-bottom: 20px;
 }
 footer .dtls p {
-  font-size: 14px;
   color: #fff;
   margin-bottom: 10px;
   padding-right: 40px;
@@ -870,7 +864,7 @@ footer .dtls ul li:first-child a {
   font-size: 24px;
 }
 footer .subscribe strong {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
   color: #fff;
   margin-bottom: 20px;
@@ -886,7 +880,7 @@ footer .subscribe input[type="text"] {
   border-radius: 5px;
   background: #fff;
   padding: 0 0 0 15px;
-  font-size: 15px;
+  font-size: 12px;
   width: calc(100% - 120px);
 }
 footer .subscribe input[type="submit"] {
@@ -898,7 +892,7 @@ footer .subscribe input[type="submit"] {
   font-weight: 500;
   text-transform: uppercase;
   padding: 0 20px;
-  font-size: 15px;
+  font-size: 12px;
   width: 120px;
 }
 .footnav ul {
@@ -909,14 +903,14 @@ footer .subscribe input[type="submit"] {
 }
 .footnav ul li a {
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   display: block;
   margin-top: 25px;
   white-space: nowrap;
 }
 .copyright {
   margin-top: 30px;
-  font-size: 14px;
+  font-size: 12px;
   color: #fff;
 }
 #newdealwrap {
@@ -965,7 +959,7 @@ footer .subscribe input[type="submit"] {
   right: 0;
 }
 .newdealform h3 {
-  font-size: 20px;
+  font-size: 18px;
   color: #005baa;
   text-transform: uppercase;
   margin-bottom: 25px;
@@ -980,7 +974,6 @@ footer .subscribe input[type="submit"] {
 .newdealform .labeldiv label,
 .forminput .labeldiv label {
   color: #191e35;
-  font-size: 16px;
   text-transform: capitalize;
   margin: 0;
 }
@@ -992,7 +985,7 @@ footer .subscribe input[type="submit"] {
 .newdealform .forminput input,
 .forminput input,
 .forminput select {
-  height: 45px;
+  height: 35px;
   background: #ffffff;
   border: 1px solid rgba(25, 30, 53, 0.3);
   border-radius: 5px;
@@ -1030,7 +1023,7 @@ footer .subscribe input[type="submit"] {
   display: none;
 }
 .select-menu .select-label {
-  width: 100%;
+  width: calc(100% - 60px);
   display: flex;
   height: 45px;
   display: block;
@@ -1047,14 +1040,13 @@ footer .subscribe input[type="submit"] {
   top: 0;
   left: 0;
   margin-top: 0;
-  font-size: 16px;
   line-height: 45px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   height: 45px;
 }
-.arrow {
+.select-menu .arrow {
   width: 45px;
   height: 45px;
   position: absolute;
@@ -1107,7 +1099,7 @@ footer .subscribe input[type="submit"] {
   height: 35px;
   display: block;
   padding: 0 8px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
   border: none;
   outline: none;
@@ -1220,7 +1212,7 @@ footer .subscribe input[type="submit"] {
   transition: box-shadow 2.5s ease;
 }
 .newdealform .close {
-  font-size: 13px;
+  font-size: 11px;
   margin-top: -20px;
   width: 30px;
   height: 30px;
@@ -1248,7 +1240,7 @@ footer .subscribe input[type="submit"] {
   margin-bottom: 25px;
 }
 .dealsuccess p {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 22px;
   color: rgba(0, 91, 170, 1);
   margin-bottom: 15px;
@@ -1257,7 +1249,7 @@ footer .subscribe input[type="submit"] {
 .dealsuccess .dtls button {
   height: 45px;
   width: 145px;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   border-radius: 4px;
   color: #fff;
@@ -1269,7 +1261,7 @@ footer .subscribe input[type="submit"] {
   border-radius: 5px;
   display: inline-block;
   padding: 0 20px;
-  font-size: 16px;
+  font-size: 12px;
   color: rgba(54, 72, 92, 1);
 }
 .btn-primary-month.active {
@@ -1304,13 +1296,13 @@ body.dashboard {
   margin: auto;
 }
 .dashstats .statswrap .dtls h6 {
-  font-size: 1.85vw;
+  font-size: 1.7vw;
   line-height: 46px;
 }
 
 .dashstats .statswrap .dtls h6 span {
   display: block;
-  font-size: 2.1vw;
+  font-size: 1.8vw;
   font-weight: 700;
   line-height: 2.2vw;
 }
@@ -1328,17 +1320,16 @@ body.dashboard {
   text-transform: uppercase;
 }
 .dashstats .statswrap .dtls label {
-  font-size: 16px;
   color: #005baa;
   margin-bottom: 5px;
 }
 .dashstats .statswrap .dtls .value {
-  font: normal normal bold 39px/40px "Biotif";
+  font: normal normal bold 36px/40px "Biotif";
   color: #36485c;
 }
 .dashstats .statswrap .dtls .value span {
   color: #2d2d2d;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
 }
 .dashstats .statswrap .dtls .report {
@@ -1363,7 +1354,7 @@ body.dashboard {
   background-size: auto 20px;
 }
 .resoucewrap h6 {
-  font-size: 19px;
+  font-size: 16px;
   color: #005baa;
   font-weight: 400;
   margin-bottom: 10px;
@@ -1418,7 +1409,7 @@ body.dashboard {
   max-height: unset;
 }
 .formsteps {
-  margin: 60px 0 30px 0;
+  margin: 30px 0 30px 0;
   width: 100%;
 }
 .formsteps ul {
@@ -1455,13 +1446,13 @@ body.dashboard {
   color: #fff;
 }
 .formsteps ul li p {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   color: #8195ab;
   margin-bottom: 3px;
 }
 .formsteps ul li.active p {
-  font-weight: 700;
+  font-weight: 500;
   color: #005baa;
 }
 .formsteps ul li::after {
@@ -1505,7 +1496,7 @@ body.dashboard {
   margin-bottom: 10px;
 }
 .ftitle h6 {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 500;
   margin: 0;
   color: #005baa;
@@ -1554,7 +1545,7 @@ body.dashboard {
 }
 .docfile li img {
   margin-right: 10px;
-  height: 50px;
+  height: 35px;
 }
 .docfile li span {
   color: rgba(25, 49, 86, 1);
@@ -1565,13 +1556,13 @@ body.dashboard {
   color: rgba(0, 0, 0, 0.2);
 }
 .btnreg {
-  margin: 20px 0;
+  margin: 10px 0;
   width: 100%;
   display: flex;
   justify-content: flex-end;
 }
 .btnreg a {
-  height: 45px;
+  height: 35px;
   width: 160px;
   margin-left: 15px;
   display: flex;
@@ -1583,6 +1574,16 @@ body.dashboard {
 /* New  */
 .fwrap > .fold {
   display: none;
+  margin-left: 7px;
+}
+
+.fwrap > .fold > table > tr > td > span {
+  color: #04458c;
+}
+
+.fwrap > .fold > table > tr > td > p {
+  color: #000;
+  height: 5px;
 }
 
 .fwrap > .fold.open {
@@ -1622,4 +1623,64 @@ body.dashboard {
 
 .headermenu > ul > li > a.active {
   color: #ffd400;
+}
+
+.newdealsectiontitle {
+  background-color: #005baa1a;
+  font-weight: bold;
+  margin-left: -30px;
+  margin-right: -30px;
+  padding: 10px;
+  padding-left: 30px;
+}
+
+.btn-rounded {
+  height: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  background: #005baa;
+  border-radius: 15px;
+  color: white;
+}
+
+.btn-border:hover {
+  color: #004a9c;
+}
+
+.form-check-inline {
+  margin-top: 10px;
+}
+
+.header-logo {
+  height: 50px;
+}
+
+.img-icon {
+  height: 18px;
+}
+
+.btn-link-success {
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #005baa;
+}
+
+.btn-link-reject {
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #eb4d4b;
+}
+
+.btn {
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+.prod-tag {
+  margin-left: 1px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  color: #005baa;
+  background-color: #005baa20;
+  border-radius: 13px;
 }

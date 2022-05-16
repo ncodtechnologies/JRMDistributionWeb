@@ -26,7 +26,7 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   value={data?.full_name}
                   onChange={(e) => onChangeData("full_name", e.target.value)}
                 />
-                <FieldError error={errors?.name} />
+                <FieldError error={errors?.full_name} />
               </div>
             </div>
             <div class="col-md-4">
@@ -44,7 +44,7 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   value={data?.role}
                   onChange={(e) => onChangeData("role", e.target.value)}
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.role} />
               </div>
             </div>
             <div class="col-md-4">
@@ -57,12 +57,12 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     تليفون<span>*</span>
                   </label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.phone}
                   onChange={(e) => onChangeData("phone", e.target.value)}
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.phone} />
               </div>
             </div>
             <div class="col-md-4">
@@ -75,12 +75,12 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     البريد الألكتروني<span>*</span>
                   </label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.email}
                   onChange={(e) => onChangeData("email", e.target.value)}
                 />
-                <FieldError error={errors?.title} />
+                <FieldError error={errors?.email} />
               </div>
             </div>
           </div>
@@ -104,12 +104,12 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     اسم الشركة المسجل<span>*</span>
                   </label>
                 </div>
-                <input 
+                <input
                   type="text"
                   value={data?.company_name}
                   onChange={(e) => onChangeData("company_name", e.target.value)}
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.company_name} />
               </div>
             </div>
             <div class="col-md-4">
@@ -122,12 +122,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     عنوان المقر الرئيسي<span>*</span>
                   </label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.company_location}
-                  onChange={(e) => onChangeData("company_location", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("company_location", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.company_location} />
               </div>
             </div>
             <div class="col-md-4">
@@ -140,7 +142,13 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     تليفون<span>*</span>
                   </label>
                 </div>
-                <input type="text" />
+                <input
+                  type="text"
+                  value={data?.company_phone}
+                  onChange={(e) =>
+                    onChangeData("company_phone", e.target.value)
+                  }
+                />
               </div>
             </div>
             <div class="col-md-4">
@@ -149,12 +157,12 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   <label>Fax</label>
                   <label class="ar">فاكس</label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.company_fax}
                   onChange={(e) => onChangeData("company_fax", e.target.value)}
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.company_fax} />
               </div>
             </div>
 
@@ -164,12 +172,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   <label>Website</label>
                   <label class="ar">الموقع الالكتروني</label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.company_website}
-                  onChange={(e) => onChangeData("company_website", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("company_website", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.company_website} />
               </div>
             </div>
             <div class="col-md-4">
@@ -182,12 +192,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     عدد سنوات الخبرة في السوق<span>*</span>
                   </label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.company_years}
-                  onChange={(e) => onChangeData("company_years", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("company_years", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.company_years} />
               </div>
             </div>
           </div>
@@ -211,12 +223,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     العنوان<span>*</span>
                   </label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.billing_address}
-                  onChange={(e) => onChangeData("billing_addresss", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("billing_address", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.billing_address} />
               </div>
             </div>
             <div class="col-md-4">
@@ -263,12 +277,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   <label>Zip/Postal Code</label>
                   <label class="ar">الرقم البريدي</label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.billing_postalcode}
-                  onChange={(e) => onChangeData("billing_postalcode", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("billing_postalcode", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.billing_postalcode} />
               </div>
             </div>
             <div class="col-md-4">
@@ -297,6 +313,21 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   type="checkbox"
                   id="inlineCheckbox1"
                   value="option1"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      onChangeData(
+                        "shipping_postalcode",
+                        data?.billing_postalcode
+                      );
+                      setTimeout(
+                        onChangeData("shipping_address", data?.billing_address),
+                        100
+                      );
+                    } else {
+                      onChangeData("shipping_address", "");
+                      onChangeData("shipping_postalcode", "");
+                    }
+                  }}
                 />
                 <label class="form-check-label" for="inlineCheckbox1">
                   Billing address same as shipping address
@@ -324,12 +355,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                     العنوان<span>*</span>
                   </label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.shipping_address}
-                  onChange={(e) => onChangeData("shipping_address", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("shipping_address", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} /> 
+                <FieldError error={errors?.shipping_address} />
               </div>
             </div>
             <div class="col-md-4">
@@ -376,12 +409,14 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   <label>Zip/Postal Code</label>
                   <label class="ar">الرقم البريدي</label>
                 </div>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={data?.shipping_postalcode}
-                  onChange={(e) => onChangeData("shipping_postalcode", e.target.value)}
+                  onChange={(e) =>
+                    onChangeData("shipping_postalcode", e.target.value)
+                  }
                 />
-                <FieldError error={errors?.name} />
+                <FieldError error={errors?.shipping_postalcode} />
               </div>
             </div>
             <div class="col-md-4">
@@ -401,19 +436,6 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   <option value="">Option 3</option>
                   <option value="">Option 4</option>
                 </select>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="inlineCheckbox2"
-                  value="option2"
-                />
-                <label class="form-check-label" for="inlineCheckbox2">
-                  Billing address same as shipping address
-                </label>
               </div>
             </div>
           </div>
