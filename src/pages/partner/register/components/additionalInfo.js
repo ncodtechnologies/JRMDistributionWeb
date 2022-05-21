@@ -65,6 +65,7 @@ export default function RegAdditionalInfo({ data, onChangeData, errors }) {
                 >
                   {data?.opportunity}
                 </textarea>
+                <FieldError error={errors?.opportunity} />
               </div>
             </div>
           </div>

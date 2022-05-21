@@ -35,8 +35,11 @@ export default function RegisterPartner() {
     });
   };
 
-  const submit = () => {
-    register(data);
+  const submit = async () => {
+    const validated = await validatePage(tabHeads.length - 1);
+    if (validated) {
+      register(data);
+    }
   };
 
   const validatePage = async (index) => {

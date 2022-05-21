@@ -1,10 +1,15 @@
 import * as Yup from "yup";
 
 export const CustomerCreateSchema = Yup.object().shape({
-  full_name: Yup.string().required("Required"),
+  full_name: Yup.string()
+    .matches(/^[a-z ,.'-]+$/i, {
+      message: "Please enter valid Name",
+      excludeEmptyString: false,
+    })
+    .required("Required"),
   company_name: Yup.string().required("Required"),
   phone: Yup.string()
-    .matches(/^[6-9]\d{9}$/, {
+    .matches(/(^7[0-9]{9}|^7[0-9]{10})$/, {
       message: "Please enter valid number.",
       excludeEmptyString: false,
     })

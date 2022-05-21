@@ -2,6 +2,7 @@ import { useState } from "react";
 import FieldError from "../../../../components/FieldError";
 
 export default function RegBasicInfo({ data, onChangeData, errors }) {
+  const [sameBillingShipping, setSameBillingShipping] = useState(true);
   return (
     <>
       <div class="formwrap">
@@ -315,6 +316,7 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                   value="option1"
                   onChange={(e) => {
                     if (e.target.checked) {
+                      setSameBillingShipping(true);
                       onChangeData(
                         "shipping_postalcode",
                         data?.billing_postalcode
@@ -324,6 +326,7 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
                         100
                       );
                     } else {
+                      setSameBillingShipping(false);
                       onChangeData("shipping_address", "");
                       onChangeData("shipping_postalcode", "");
                     }
@@ -338,109 +341,111 @@ export default function RegBasicInfo({ data, onChangeData, errors }) {
         </div>
       </div>
 
-      <div class="formwrap">
-        <div class="ftitle">
-          <h6>SHIPPING ADDRESS</h6>
-          <h6 class="ar">بيانات الشحن</h6>
-        </div>
-        <div class="fwrap">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="forminput">
-                <div class="labeldiv">
-                  <label>
-                    Address<span>*</span>
-                  </label>
-                  <label class="ar">
-                    العنوان<span>*</span>
-                  </label>
+      {!sameBillingShipping && (
+        <div class="formwrap">
+          <div class="ftitle">
+            <h6>SHIPPING ADDRESS</h6>
+            <h6 class="ar">بيانات الشحن</h6>
+          </div>
+          <div class="fwrap">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="forminput">
+                  <div class="labeldiv">
+                    <label>
+                      Address<span>*</span>
+                    </label>
+                    <label class="ar">
+                      العنوان<span>*</span>
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    value={data?.shipping_address}
+                    onChange={(e) =>
+                      onChangeData("shipping_address", e.target.value)
+                    }
+                  />
+                  <FieldError error={errors?.shipping_address} />
                 </div>
-                <input
-                  type="text"
-                  value={data?.shipping_address}
-                  onChange={(e) =>
-                    onChangeData("shipping_address", e.target.value)
-                  }
-                />
-                <FieldError error={errors?.shipping_address} />
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="forminput">
-                <div class="labeldiv">
-                  <label>
-                    City<span>*</span>
-                  </label>
-                  <label class="ar">
-                    المدينة<span>*</span>
-                  </label>
+              <div class="col-md-4">
+                <div class="forminput">
+                  <div class="labeldiv">
+                    <label>
+                      City<span>*</span>
+                    </label>
+                    <label class="ar">
+                      المدينة<span>*</span>
+                    </label>
+                  </div>
+                  <select name="" id="">
+                    <option value=""></option>
+                    <option value="">Option 1</option>
+                    <option value="">Option 2</option>
+                    <option value="">Option 3</option>
+                    <option value="">Option 4</option>
+                  </select>
                 </div>
-                <select name="" id="">
-                  <option value=""></option>
-                  <option value="">Option 1</option>
-                  <option value="">Option 2</option>
-                  <option value="">Option 3</option>
-                  <option value="">Option 4</option>
-                </select>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="forminput">
-                <div class="labeldiv">
-                  <label>
-                    State/Province<span>*</span>
-                  </label>
-                  <label class="ar">
-                    تليفون<span>*</span>
-                  </label>
+              <div class="col-md-4">
+                <div class="forminput">
+                  <div class="labeldiv">
+                    <label>
+                      State/Province<span>*</span>
+                    </label>
+                    <label class="ar">
+                      تليفون<span>*</span>
+                    </label>
+                  </div>
+                  <select name="" id="">
+                    <option value=""></option>
+                    <option value="">Option 1</option>
+                    <option value="">Option 2</option>
+                    <option value="">Option 3</option>
+                    <option value="">Option 4</option>
+                  </select>
                 </div>
-                <select name="" id="">
-                  <option value=""></option>
-                  <option value="">Option 1</option>
-                  <option value="">Option 2</option>
-                  <option value="">Option 3</option>
-                  <option value="">Option 4</option>
-                </select>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="forminput">
-                <div class="labeldiv">
-                  <label>Zip/Postal Code</label>
-                  <label class="ar">الرقم البريدي</label>
+              <div class="col-md-4">
+                <div class="forminput">
+                  <div class="labeldiv">
+                    <label>Zip/Postal Code</label>
+                    <label class="ar">الرقم البريدي</label>
+                  </div>
+                  <input
+                    type="text"
+                    value={data?.shipping_postalcode}
+                    onChange={(e) =>
+                      onChangeData("shipping_postalcode", e.target.value)
+                    }
+                  />
+                  <FieldError error={errors?.shipping_postalcode} />
                 </div>
-                <input
-                  type="text"
-                  value={data?.shipping_postalcode}
-                  onChange={(e) =>
-                    onChangeData("shipping_postalcode", e.target.value)
-                  }
-                />
-                <FieldError error={errors?.shipping_postalcode} />
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="forminput">
-                <div class="labeldiv">
-                  <label>
-                    Country<span>*</span>
-                  </label>
-                  <label class="ar">
-                    البلد<span>*</span>
-                  </label>
+              <div class="col-md-4">
+                <div class="forminput">
+                  <div class="labeldiv">
+                    <label>
+                      Country<span>*</span>
+                    </label>
+                    <label class="ar">
+                      البلد<span>*</span>
+                    </label>
+                  </div>
+                  <select name="" id="">
+                    <option value=""></option>
+                    <option value="">Option 1</option>
+                    <option value="">Option 2</option>
+                    <option value="">Option 3</option>
+                    <option value="">Option 4</option>
+                  </select>
                 </div>
-                <select name="" id="">
-                  <option value=""></option>
-                  <option value="">Option 1</option>
-                  <option value="">Option 2</option>
-                  <option value="">Option 3</option>
-                  <option value="">Option 4</option>
-                </select>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       {/* 
       <div class="formwrap">
         <div class="ftitle">

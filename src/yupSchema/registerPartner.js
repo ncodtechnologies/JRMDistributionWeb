@@ -1,11 +1,17 @@
 import * as yup from "yup";
 
 export const RegPartnerBasicSchema = yup.object({
-  full_name: yup.string().required("Required"),
+  full_name: yup
+    .string()
+    .matches(/^[a-z ,.'-]+$/i, {
+      message: "Please enter valid Name",
+      excludeEmptyString: false,
+    })
+    .required("Required"),
   role: yup.string().required("Required"),
   phone: yup
     .string()
-    .matches(/^[6-9]\d{9}$/, {
+    .matches(/(^7[0-9]{9}|^7[0-9]{10})$/, {
       message: "Please enter valid number.",
       excludeEmptyString: false,
     })
@@ -15,16 +21,22 @@ export const RegPartnerBasicSchema = yup.object({
   company_location: yup.string().required("Required"),
   company_phone: yup
     .string()
-    .matches(/^[6-9]\d{9}$/, {
+    .matches(/(^7[0-9]{9}|^7[0-9]{10})$/, {
       message: "Please enter valid number.",
       excludeEmptyString: false,
     })
     .required("Required"),
   company_years: yup.number().required("Required"),
   billing_address: yup.string().required("Required"),
-  billing_postalcode: yup.string().required("Required"),
+  billing_postalcode: yup.string().matches(/^[0-9]*$/, {
+    message: "Please enter valid number.",
+    excludeEmptyString: false,
+  }),
   shipping_address: yup.string().required("Required"),
-  shipping_postalcode: yup.string().required("Required"),
+  shipping_postalcode: yup.string().matches(/^[0-9]*$/, {
+    message: "Please enter valid number.",
+    excludeEmptyString: false,
+  }),
   company_website: yup
     .string()
     .matches(
@@ -34,8 +46,20 @@ export const RegPartnerBasicSchema = yup.object({
 });
 
 export const RegPartnerCompanySchema = yup.object({
-  executive_first_name: yup.string().required("Required"),
-  executive_last_name: yup.string().required("Required"),
+  executive_first_name: yup
+    .string()
+    .matches(/^[a-z ,.'-]+$/i, {
+      message: "Please enter valid Name",
+      excludeEmptyString: false,
+    })
+    .required("Required"),
+  executive_last_name: yup
+    .string()
+    .matches(/^[a-z ,.'-]+$/i, {
+      message: "Please enter valid Name",
+      excludeEmptyString: false,
+    })
+    .required("Required"),
   executive_email: yup.string().required("Required"),
   executive_role: yup.string().required("Required"),
 });

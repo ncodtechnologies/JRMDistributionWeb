@@ -117,7 +117,8 @@ export default function AdminCustomer() {
         customer_id,
       })
       .then(function (response) {
-        loadCustomers(selectedStatus);
+        setSelectedStatus("PENDING");
+        loadCustomers("PENDING");
         loadCount();
         showAlert("Customer Approved!");
       })

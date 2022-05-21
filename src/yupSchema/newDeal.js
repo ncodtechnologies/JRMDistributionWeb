@@ -6,7 +6,7 @@ export const NewDealSchema = Yup.object().shape({
   project_for: Yup.string().required("Required"),
   contact_person: Yup.string().required("Required"),
   mobile_no: Yup.string()
-    .matches(/^[6-9]\d{9}$/, {
+    .matches(/(^7[0-9]{9}|^7[0-9]{10})$/, {
       message: "Please enter valid phone number.",
       excludeEmptyString: false,
     })

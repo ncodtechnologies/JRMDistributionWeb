@@ -88,6 +88,7 @@ export default function PartnersList() {
       .then(function (response) {
         handleCloseModal();
         loadPartners(selectedStatus);
+        NotificationManager.success("Partner Rejected!");
       })
       .catch(function (error) {
         console.log(error);

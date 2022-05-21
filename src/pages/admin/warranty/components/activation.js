@@ -87,11 +87,12 @@ const ActivationPopup = ({
           href="#"
           onClick={(e) => {
             e.preventDefault();
-            activate(
-              selWarrantyProdId ? [selWarrantyProdId] : checkedList,
-              startDate,
-              endDate
-            );
+            if (startDate && endDate)
+              activate(
+                selWarrantyProdId ? [selWarrantyProdId] : checkedList,
+                startDate,
+                endDate
+              );
           }}
           class="btn-primary"
         >

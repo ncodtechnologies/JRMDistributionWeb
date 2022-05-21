@@ -34,6 +34,7 @@ export default function RegPartenrshipLevel({ data, onChangeData, errors }) {
                   <option value="Silver">Silver</option>
                   <option value="Platinum">Platinum</option>
                 </select>
+                <FieldError error={errors?.partnership} />
               </div>
             </div>
             <div class="col-md-4">
@@ -51,6 +52,7 @@ export default function RegPartenrshipLevel({ data, onChangeData, errors }) {
                   value={data?.sales_target}
                   onChange={(e) => onChangeData("sales_target", e.target.value)}
                 />
+                <FieldError error={errors?.sales_target} />
               </div>
             </div>
           </div>
